@@ -49,18 +49,22 @@ con.connect(function (err) {// Throws error or confirms connection
 
 /*---------------------------------- LOGIN/LOGOUT/REGISTER ----------------------------------*/
 
-app.post('/loginGuest', (request, response) => {
+app.post('/login', (request, response) => {
   const the_username = request.body.username.toLowerCase();
   const the_password = request.body.password;
 
   // Define query to validate user credentials
   const query = `
-    SELECT g.Email, g.Password 
-    FROM guest g
-    WHERE g.Email = ?;
+    (SELECT Email, Password
+     FROM student
+     WHERE Email = ?)
+     UNION
+     (SELECT Email, Password
+     FROM teacher
+     WHERE Email = ?);
   `;
 
-  con.query(query, [the_username], (err, results) => {
+  con.query(query, [the_username, the_username], (err, results) => {
     console.log(`${results[0]}`);
 
     if (err) {
@@ -80,16 +84,28 @@ app.post('/loginGuest', (request, response) => {
       return response.status(401).send('Invalid username or password');
     }
 
+    response.cookie("loggedIn", 1, { expire: Date.now() + 30 * 60 * 1000 }); // 30 min cookie THAT RECORDS WHEN YOU LOG IN
+// REDIRECTING  and giving cookie BASED ON ROLE change this please
+    if (user.Role === 'Student') {
+      console.log(`1`);
+      response.cookie("role", 1, { expire: Date.now() + 30 * 60 * 1000 }); 
+      return response.redirect('/about.html');
+    } else if (user.Role === 'Teacher') {
+      console.log(`2`);
+      response.cookie("role", 2, { expire: Date.now() + 30 * 60 * 1000 }); 
+      return response.redirect('/about.html');
+    } else if (user.Role === 'Principal') {
+      console.log(`3`);
+      response.cookie("role", 3, { expire: Date.now() + 30 * 60 * 1000 }); 
+      return response.redirect('/about.html');
+    };
+
     // Store User_ID and User_Name in session
 //    request.session.Account_Name = user.User_Name; // User_Name
 //    request.session.Account_ID = user.User_ID;     // User_ID
 
 //    console.log(`User_Name ${user.User_Name} stored in session.`);
 //    console.log(`User_ID ${user.User_ID} stored in session.`);
-
-    // Set logged-in cookie and redirect
-    response.cookie("loggedIn", 1, { expire: Date.now() + 30 * 60 * 1000 }); // 30 min cookie THAT RECORDS WHEN YOU LOG IN
-    return response.redirect('/rooms.html');
   });
 });
 
@@ -143,55 +159,6 @@ app.post('/register', function (request, response) {
 
 app.get('/logout', function (request, response){// Redirects user to home page after logging out
   response.redirect(`./index.html`)
-});
-
-app.post('/loginStaff', (request, response) => {// Login route
-  const the_username = request.body.username.toLowerCase();
-  const the_password = request.body.password;
-
-  // Secure query to validate user credentials
-  const query = `
-    SELECT s.Email, s.Password, s.Role
-    FROM staff s
-    WHERE s.Email = ?;
-  `;
-
-  con.query(query, [the_username], (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return response.status(500).send('Internal Server Error');
-    }
-
-    // Check if user exists
-    if (results.length === 0) {
-      return response.status(401).send('Invalid username or password');
-    }
-
-    const user = results[0];
-
-    // Password validation
-    if (user.Password !== the_password) {
-      return response.status(401).send('Invalid username or password');
-    }
-  
-    // Store User_ID and User_Name in session
-    //request.session.Account_Name = user.User_Name; // User_Name
-    //request.session.Account_ID = user.User_ID;     // User_ID
-
-    //console.log(`User_Name ${user.User_Name} stored in session.`);
-    //console.log(`User_ID ${user.User_ID} stored in session.`);
-
-    // Set logged-in cookie and redirect
-    response.cookie("loggedIn", 1, { expire: Date.now() + 30 * 60 * 1000 }); // 30 min cookie THAT RECORDS WHEN YOU LOG IN
-    
-    if(user.Role === 'Manager'){ // CHANGES THE VALE OF THE STAFF COOKIE ACCORDING TO THE ROLE OF THE STAFF MEMBER
-      response.cookie("staff", 2, {expire: Date.now() + 30 * 60 * 1000});// make a manager cookie
-    }else{
-      response.cookie("staff", 1, {expire: Date.now() + 30 * 60 * 1000});// make a staff cookie
-    }
-    
-    return response.redirect('/rooms.html');
-  });
 });
 
 /*---------------------------------- ROOMS SQL ----------------------------------*/
