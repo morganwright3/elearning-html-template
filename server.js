@@ -35,7 +35,7 @@ app.all('*', function (request, response, next){// this function also makes rese
 /*---------------------------------- DATABASE CONNECTION ----------------------------------*/
 console.log("Connecting to localhost..."); 
 var con = mysql.createConnection({// Actual DB connection occurs here
-  host: '127.0.0.1',
+  host: '10.211.55.3',
   user: "root",
   port: 3306,
   database: "maryknoll", 
