@@ -55,11 +55,11 @@ app.post('/login', (request, response) => {
 
   // Define query to validate user credentials
   const query = `
-    (SELECT Email, Password
+    (SELECT Email, Password, Role
      FROM student
      WHERE Email = ?)
      UNION
-     (SELECT Email, Password
+     (SELECT Email, Password, Role
      FROM teacher
      WHERE Email = ?);
   `;
@@ -86,15 +86,15 @@ app.post('/login', (request, response) => {
 
     response.cookie("loggedIn", 1, { expire: Date.now() + 30 * 60 * 1000 }); // 30 min cookie THAT RECORDS WHEN YOU LOG IN
 // REDIRECTING  and giving cookie BASED ON ROLE change this please
-    if (user.Role === 'Student') {
+    if (user.Role === 'student') {
       console.log(`1`);
       response.cookie("role", 1, { expire: Date.now() + 30 * 60 * 1000 }); 
       return response.redirect('/about.html');
-    } else if (user.Role === 'Teacher') {
+    } else if (user.Role === 'teacher') {
       console.log(`2`);
       response.cookie("role", 2, { expire: Date.now() + 30 * 60 * 1000 }); 
       return response.redirect('/about.html');
-    } else if (user.Role === 'Principal') {
+    } else if (user.Role === 'principal') {
       console.log(`3`);
       response.cookie("role", 3, { expire: Date.now() + 30 * 60 * 1000 }); 
       return response.redirect('/about.html');
