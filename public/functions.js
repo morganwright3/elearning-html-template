@@ -26,9 +26,9 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Student Services</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Register For Class</a>
-                  <a href="team.html" class="dropdown-item">View Grades</a>
-                  <a href="team.html" class="dropdown-item">View Attendance</a>
-                  <a href="team.html" class="dropdown-item">Download Report Card</a>
+                  <a href="viewGrades.html" class="dropdown-item">View Grades</a>
+                  <a href="viewAttendance.html" class="dropdown-item">View Attendance</a>
+                  <a href="downloadReportCard.html" class="dropdown-item">Download Report Card</a>
                 </div>
               </div>
 
