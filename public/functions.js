@@ -22,14 +22,14 @@ function navBar(mode = "index") {
           <div class="navbar-nav ms-auto p-4 p-lg-0">
             <a href="index.html" class="nav-item nav-link">Home</a>
 
-            ${mode === "portal" ? `
+            ${mode === "sportal" ? `
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Student Services</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Register For Class</a>
-                  <a href="testimonial.html" class="dropdown-item">View Grades</a>
-                  <a href="404.html" class="dropdown-item">View Attendance</a>
-                  <a href="404.html" class="dropdown-item">Download Report Card</a>
+                  <a href="team.html" class="dropdown-item">View Grades</a>
+                  <a href="team.html" class="dropdown-item">View Attendance</a>
+                  <a href="team.html" class="dropdown-item">Download Report Card</a>
                 </div>
               </div>
 
@@ -37,9 +37,9 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Parent Services</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Link Student Account</a>
-                  <a href="testimonial.html" class="dropdown-item">Sign Permission Slip</a>
-                  <a href="404.html" class="dropdown-item">View Fee Payment Status</a>
-                  <a href="404.html" class="dropdown-item">Schedule Conference</a>
+                  <a href="team.html" class="dropdown-item">Sign Permission Slip</a>
+                  <a href="team.html" class="dropdown-item">View Fee Payment Status</a>
+                  <a href="team.html" class="dropdown-item">Schedule Conference</a>
                 </div>
               </div>
 
@@ -47,9 +47,9 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Forms and Documents</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Permission Slips</a>
-                  <a href="testimonial.html" class="dropdown-item">Register For A Club</a>
-                  <a href="404.html" class="dropdown-item">Activity Waiver</a>
-                  <a href="404.html" class="dropdown-item">Event Flyers and Downloads</a>
+                  <a href="team.html" class="dropdown-item">Register For A Club</a>
+                  <a href="team.html" class="dropdown-item">Activity Waiver</a>
+                  <a href="team.html" class="dropdown-item">Event Flyers and Downloads</a>
                 </div>
               </div>
 
@@ -57,9 +57,9 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Schedule and Events</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Sign Up For Field Trips</a>
-                  <a href="testimonial.html" class="dropdown-item">Volunteer Opportunities</a>
-                  <a href="404.html" class="dropdown-item">Activity Calendar</a>
-                  <a href="404.html" class="dropdown-item">Search Events By Type</a>
+                  <a href="team.html" class="dropdown-item">Volunteer Opportunities</a>
+                  <a href="team.html" class="dropdown-item">Activity Calendar</a>
+                  <a href="team.html" class="dropdown-item">Search Events By Type</a>
                 </div>
               </div>
             ` : ``}
