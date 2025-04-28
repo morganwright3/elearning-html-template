@@ -63,6 +63,90 @@ function navBar(mode = "index") {
                 </div>
               </div>
             ` : ``}
+                        ${mode === "tportal" ? `
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manages Courses</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">World History - 001</a>
+                  <a href="team.html" class="dropdown-item">World History - 002</a>
+                  <a href="team.html" class="dropdown-item">AP US History - 004</a>
+                  <a href="team.html" class="dropdown-item">US History - 001</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Academic Reports</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Spring 2025 Semester</a>
+                  <a href="team.html" class="dropdown-item">Fall 2024 Semester</a>
+                  <a href="team.html" class="dropdown-item">2024 - 2025 Academic Year</a>
+                  <a href="team.html" class="dropdown-item">Spring 2024 Semester</a>
+                  <a href="team.html" class="dropdown-item">Fall 2023 Semester</a>
+                  <a href="team.html" class="dropdown-item">2023 - 2024 Academic Year</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Communication</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Announcements</a>
+                  <a href="team.html" class="dropdown-item">Email</a>
+                  <a href="team.html" class="dropdown-item">Private Messages</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Student List</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Search</a>
+                  <a href="team.html" class="dropdown-item">Class of 2025</a>
+                  <a href="team.html" class="dropdown-item">Class of 2026</a>
+                  <a href="team.html" class="dropdown-item">Class of 2027</a>
+                  <a href="team.html" class="dropdown-item">Class of 2028</a>
+                  <a href="team.html" class="dropdown-item">Class of 2029</a>
+                </div>
+              </div>
+            ` : ``}
+                        ${mode === "aportal" ? `
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Users</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Add/Edit/ Delete Users</a>
+                  <a href="team.html" class="dropdown-item">Link Student-Parent Accounts</a>
+                  <a href="team.html" class="dropdown-item">Reset Passwords</a>
+                  <a href="team.html" class="dropdown-item">Assign Roles</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Academics</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Upload/Edit Report Cards</a>
+                  <a href="team.html" class="dropdown-item">Registerr Students For Classes</a>
+                  <a href="team.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Events</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Create/Edit Events and Field Trips</a>
+                  <a href="team.html" class="dropdown-item">Handle Permission Slips and Waivers</a>
+                  <a href="team.html" class="dropdown-item">Upload Flyers and Documents</a>
+                  <a href="team.html" class="dropdown-item">Track Volunteer Sign-Ups</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Communication</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Send Emails and Messages</a>
+                  <a href="team.html" class="dropdown-item">Post Announcements</a>
+                  <a href="team.html" class="dropdown-item">Activity Calendar</a>
+                  <a href="team.html" class="dropdown-item">Message By Class Or Group</a>
+                </div>
+              </div>
+            ` : ``}
           </div>
 
           ${isloggedin == 1 ? `
