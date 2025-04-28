@@ -1,7 +1,8 @@
 /* Incorporated into the design from W3schools: W3.CSS 4.15 December 2020 by Jan Egil and Borge Refsnes */
 /*-------------------------------------- UHM ITM354 Final Project --------------------------------------*/
 
-
+hello
+hiiiii
 
 /*---------------------------------- GENERAL FUNCTIONS USED EVERWHERE ----------------------------------*/
 
