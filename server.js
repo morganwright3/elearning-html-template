@@ -89,15 +89,15 @@ app.post('/login', (request, response) => {
     if (user.Role === 'student') {
       console.log(`1`);
       response.cookie("role", 1, { expire: Date.now() + 30 * 60 * 1000 }); 
-      return response.redirect('/about.html');
+      return response.redirect('/studentPortal.html');
     } else if (user.Role === 'teacher') {
       console.log(`2`);
       response.cookie("role", 2, { expire: Date.now() + 30 * 60 * 1000 }); 
-      return response.redirect('/about.html');
+      return response.redirect('/teacherPortal.html');
     } else if (user.Role === 'principal') {
       console.log(`3`);
       response.cookie("role", 3, { expire: Date.now() + 30 * 60 * 1000 }); 
-      return response.redirect('/about.html');
+      return response.redirect('/adminPortal.html');
     };
 
     // Store User_ID and User_Name in session

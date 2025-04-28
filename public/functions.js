@@ -7,125 +7,74 @@
 
 /*---------------------------------- GENERAL FUNCTIONS USED EVERWHERE ----------------------------------*/
 
-function navBar() { // the function that generates the nav bar
-let isloggedin = getCookie("loggedIn");
-let role1 = getCookie("role");
-if (isloggedin == 1) {
-    if (role1 == 1) { // STUDENT ONLY NAVBAR ------------------------------------------------------
-        document.write(`
-            <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-               <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                   <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-               </a>
-               <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                   <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarCollapse">
-                   <div class="navbar-nav ms-auto p-4 p-lg-0">
-                       <a href="index.html" class="nav-item nav-link active">Home</a>
-                       <a href="about.html" class="nav-item nav-link">About</a>
-                       <a href="courses.html" class="nav-item nav-link">Courses</a>
-                       <div class="nav-item dropdown">
-                           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                           <div class="dropdown-menu fade-down m-0">
-                               <a href="team.html" class="dropdown-item">Student</a>
-                               <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                               <a href="404.html" class="dropdown-item">404 Page</a>
-                           </div>
-                       </div>
-                       <a href="contact.html" class="nav-item nav-link">Contact</a>
-                   </div>
-                   <a href="./logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" onclick="logout()">Logout<i class="fa fa-arrow-right ms-3"></i></a>
-               </div>
-           </nav>
-       `);
-    } else if (role1 == 2) { // TEACHER ONLY NAVBAR ------------------------------------------------------
-        document.write(`
-            <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-               <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                   <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-               </a>
-               <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                   <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarCollapse">
-                   <div class="navbar-nav ms-auto p-4 p-lg-0">
-                       <a href="index.html" class="nav-item nav-link active">Home</a>
-                       <a href="about.html" class="nav-item nav-link">About</a>
-                       <a href="courses.html" class="nav-item nav-link">Courses</a>
-                       <div class="nav-item dropdown">
-                           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                           <div class="dropdown-menu fade-down m-0">
-                               <a href="team.html" class="dropdown-item">Teacher</a>
-                               <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                               <a href="404.html" class="dropdown-item">404 Page</a>
-                           </div>
-                       </div>
-                       <a href="contact.html" class="nav-item nav-link">Contact</a>
-                   </div>
-                   <a href="./logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" onclick="logout()">Logout<i class="fa fa-arrow-right ms-3"></i></a>
-               </div>
-           </nav>
-       `);
-    } else if (role1 == 3) { // ADMIN ONLY NAVBAR ------------------------------------------------------
-        document.write(`
-            <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-               <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                   <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-               </a>
-               <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                   <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarCollapse">
-                   <div class="navbar-nav ms-auto p-4 p-lg-0">
-                       <a href="index.html" class="nav-item nav-link active">Home</a>
-                       <a href="about.html" class="nav-item nav-link">About</a>
-                       <a href="courses.html" class="nav-item nav-link">Courses</a>
-                       <div class="nav-item dropdown">
-                           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                           <div class="dropdown-menu fade-down m-0">
-                               <a href="team.html" class="dropdown-item">Admin</a>
-                               <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                               <a href="404.html" class="dropdown-item">404 Page</a>
-                           </div>
-                       </div>
-                       <a href="contact.html" class="nav-item nav-link">Contact</a>
-                   </div>
-                   <a href="./logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" onclick="logout()">Logout<i class="fa fa-arrow-right ms-3"></i></a>
-               </div>
-           </nav>
-       `);
-    }
-} else {
-        document.write(`
-     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+function navBar(mode = "index") {
+    let isloggedin = getCookie("loggedIn");
+
+    document.write(`
+      <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
+          <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="courses.html" class="nav-item nav-link">Courses</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Page</a>
-                    </div>
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+
+            ${mode === "portal" ? `
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Student Services</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Register For Class</a>
+                  <a href="testimonial.html" class="dropdown-item">View Grades</a>
+                  <a href="404.html" class="dropdown-item">View Attendance</a>
+                  <a href="404.html" class="dropdown-item">Download Report Card</a>
                 </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-            </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Parent Services</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Link Student Account</a>
+                  <a href="testimonial.html" class="dropdown-item">Sign Permission Slip</a>
+                  <a href="404.html" class="dropdown-item">View Fee Payment Status</a>
+                  <a href="404.html" class="dropdown-item">Schedule Conference</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Forms and Documents</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Permission Slips</a>
+                  <a href="testimonial.html" class="dropdown-item">Register For A Club</a>
+                  <a href="404.html" class="dropdown-item">Activity Waiver</a>
+                  <a href="404.html" class="dropdown-item">Event Flyers and Downloads</a>
+                </div>
+              </div>
+
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Schedule and Events</a>
+                <div class="dropdown-menu fade-down m-0">
+                  <a href="team.html" class="dropdown-item">Sign Up For Field Trips</a>
+                  <a href="testimonial.html" class="dropdown-item">Volunteer Opportunities</a>
+                  <a href="404.html" class="dropdown-item">Activity Calendar</a>
+                  <a href="404.html" class="dropdown-item">Search Events By Type</a>
+                </div>
+              </div>
+            ` : ``}
+          </div>
+
+          ${isloggedin == 1 ? `
+            <a href="./logout" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" onclick="logout()">Logout<i class="fa fa-arrow-right ms-3"></i></a>
+          ` : `
             <a href="login.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Login<i class="fa fa-arrow-right ms-3"></i></a>
+          `}
         </div>
-    </nav>
-`);
+      </nav>
+    `);
 }
-}
+
 
 function styleStuff(){ //contains favicon and css information
     document.write(`
