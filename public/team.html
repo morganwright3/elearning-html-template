@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Student Registration</title>
+    <title>Class Registration</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -52,12 +52,12 @@
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Student Registration</h1>
+                    <h1 class="display-3 text-white animated slideInDown">Class Registration</h1>
                     <nav aria-label="breadcrumb">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
                             <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Registration</li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Register for Classes</li>
                         </ol>
                     </nav>
                 </div>
@@ -71,7 +71,8 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h1 class="mb-5">Register as a Student</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">Class Registration</h6>
+                <h1 class="mb-5">Register for Your Classes</h1>
             </div>
             <form action="#" method="post">
                 <div class="row g-3">
@@ -92,24 +93,18 @@
                         <input type="text" class="form-control" id="phone" name="phone" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="grade" class="form-label">Grade Level</label>
-                        <select class="form-control" id="grade" name="grade" required>
-                            <option value="9">Grade 9</option>
-                            <option value="10">Grade 10</option>
-                            <option value="11">Grade 11</option>
-                            <option value="12">Grade 12</option>
+                        <label for="class" class="form-label">Select Class</label>
+                        <select class="form-select" id="class" name="class" required>
+                            <option value="">Select a Class</option>
+                            <option value="Algebra II">Algebra II</option>
+                            <option value="World History">World History</option>
+                            <option value="AP US History">AP US History </option>
+                            <option value="English">English</option>
+                            <option value="Calculus">Calculus</option>
                         </select>
                     </div>
                     <div class="col-md-12">
-                        <label for="address" class="form-label">Home Address</label>
-                        <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
-                    </div>
-                    <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-primary py-3 px-5">Register</button>
+                        <button type="submit" class="btn btn-primary w-100 py-3">Register for Class</button>
                     </div>
                 </div>
             </form>
