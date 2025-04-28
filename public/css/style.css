@@ -1,9 +1,62 @@
 /********** Template CSS **********/
 :root {
-    --primary: #06BBCC;
-    --light: #F0FBFC;
-    --dark: #181d38;
-}
+    --bs-primary: #800020; /* Burgundy */
+    --bs-secondary: #C5A300; /* Gold */
+    --bs-success: #C5A300; /* Gold */
+    --bs-info: #800020; /* Burgundy */
+    --bs-warning: #C5A300; /* Gold */
+    --bs-danger: #800020; /* Burgundy */
+    --bs-light: #FFFFFF; /* White */
+    --bs-dark: #800020; /* Burgundy */
+  
+    --bs-blue: #800020; /* Override bootstrap blue */
+    --bs-indigo: #800020;
+    --bs-purple: #800020;
+    --bs-pink: #800020;
+    --bs-red: #800020;
+    --bs-orange: #C5A300;
+    --bs-yellow: #C5A300;
+    --bs-green: #C5A300;
+    --bs-teal: #C5A300;
+    --bs-cyan: #800020;
+  
+    --bs-body-color: #800020; /* Text color */
+    --bs-body-bg: #FFFFFF;    /* Page background */
+  }
+  
+  /* Optional: Force buttons to use correct colors */
+  .btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  }
+  .btn-primary:hover {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+  }
+  .btn-secondary {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+  }
+  .btn-secondary:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  }
+  
+  /* Optional: Fix links */
+  a, a:hover {
+    color: var(--bs-primary);
+  }
+  
+  /* Optional: Navbar tweaks */
+  .navbar {
+    background-color: var(--bs-light);
+  }
+  .navbar .nav-link {
+    color: var(--bs-primary) !important;
+  }
+  .navbar .nav-link:hover {
+    color: var(--bs-secondary) !important;
+  }
 
 .fw-medium {
     font-weight: 600 !important;
@@ -197,14 +250,12 @@
 }
 
 .page-header {
-    background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url(../img/carousel-1.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
+    background: #800020 url(../img/carousel-1.jpg) no-repeat center center;
     background-size: cover;
 }
 
 .page-header-inner {
-    background: rgba(15, 23, 43, .7);
+    background: rgba(128, 0, 32, 0.7);
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
