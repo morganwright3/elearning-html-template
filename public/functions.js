@@ -1,6 +1,4 @@
-/*---------- Created by Lui Rabideau, Xin Lin, Tassia Cocoran, Emma Sharp, and Jessica Bandol ----------*/
 /* Incorporated into the design from W3schools: W3.CSS 4.15 December 2020 by Jan Egil and Borge Refsnes */
-/*------------------------- Lui Rabideau's F2023 ITM352 Assignment 3 Template --------------------------*/
 /*-------------------------------------- UHM ITM354 Final Project --------------------------------------*/
 
 hello
@@ -14,7 +12,7 @@ function navBar(mode = "index") {
     document.write(`
       <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-          <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>myMaryknoll</h2>
+           <h2 class="-bs-primary"><img src="./img/Maryknoll_Logo.png" height="50px">myMaryknoll</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
