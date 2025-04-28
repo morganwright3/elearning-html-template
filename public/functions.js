@@ -28,7 +28,7 @@ function navBar(mode = "index") {
                   <a href="team.html" class="dropdown-item">Register For Class</a>
                   <a href="viewGrades.html" class="dropdown-item">View Grades</a>
                   <a href="viewAttendance.html" class="dropdown-item">View Attendance</a>
-                  <a href="team.html" class="dropdown-item">Download Report Card</a>
+                  <a href="downloadReportCard.html" class="dropdown-item">Download Report Card</a>
                 </div>
               </div>
 
