@@ -47,6 +47,19 @@ con.connect(function (err) {// Throws error or confirms connection
  console.log("Connected!");
 });
 
+// VIEW FEE STATUS
+app.get('/get-payments', (req, res) => {
+  const query = "SELECT PaymentID, PaymentDate, Amount, Method, Status FROM payment";
+
+  con.query(query, (err, results) => {
+      if (err) {
+          console.error('Error fetching payments:', err.message);
+          return res.status(500).send('Failed to fetch payments.');
+      }
+      res.json(results); // send back the payment records as JSON
+  });
+});
+
 /*---------------------------------- LOGIN/LOGOUT/REGISTER ----------------------------------*/
 
 app.post('/login', (request, response) => {

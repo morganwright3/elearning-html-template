@@ -35,7 +35,7 @@ function navBar(mode = "index") {
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Link Student Account</a>
                   <a href="team.html" class="dropdown-item">Sign Permission Slip</a>
-                  <a href="team.html" class="dropdown-item">View Fee Payment Status</a>
+                  <a href="paymentStatus.html" class="dropdown-item">View Fee Payment Status</a>
                   <a href="team.html" class="dropdown-item">Schedule Conference</a>
                 </div>
               </div>
