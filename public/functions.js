@@ -66,43 +66,43 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manages Attendance</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="manageAttendance.html" class="dropdown-item">World History - 001</a>
-                  <a href="team.html" class="dropdown-item">World History - 002</a>
-                  <a href="team.html" class="dropdown-item">AP US History - 004</a>
-                  <a href="team.html" class="dropdown-item">US History - 001</a>
+                  <a href="teacherblank.html" class="dropdown-item">World History - 002</a>
+                  <a href="teacherblank.html" class="dropdown-item">AP US History - 004</a>
+                  <a href="teacherblank.html" class="dropdown-item">US History - 001</a>
                 </div>
               </div>
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Academic Reports</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Spring 2025 Semester</a>
-                  <a href="team.html" class="dropdown-item">Fall 2024 Semester</a>
-                  <a href="team.html" class="dropdown-item">2024 - 2025 Academic Year</a>
-                  <a href="team.html" class="dropdown-item">Spring 2024 Semester</a>
-                  <a href="team.html" class="dropdown-item">Fall 2023 Semester</a>
-                  <a href="team.html" class="dropdown-item">2023 - 2024 Academic Year</a>
+                  <a href="teacherblank.html" class="dropdown-item">Spring 2025 Semester</a>
+                  <a href="teacherblank.html" class="dropdown-item">Fall 2024 Semester</a>
+                  <a href="teacherblank.html" class="dropdown-item">2024 - 2025 Academic Year</a>
+                  <a href="teacherblank.html" class="dropdown-item">Spring 2024 Semester</a>
+                  <a href="teacherblank.html" class="dropdown-item">Fall 2023 Semester</a>
+                  <a href="teacherblank.html" class="dropdown-item">2023 - 2024 Academic Year</a>
                 </div>
               </div>
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Communication</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Announcements</a>
-                  <a href="team.html" class="dropdown-item">Email</a>
-                  <a href="team.html" class="dropdown-item">Private Messages</a>
-                  <a href="team.html" class="dropdown-item">Manage Conferences</a>
+                  <a href="teacherblank.html" class="dropdown-item">Announcements</a>
+                  <a href="teacherblank.html" class="dropdown-item">Email</a>
+                  <a href="teacherblank.html" class="dropdown-item">Private Messages</a>
+                  <a href="teacherblank.html" class="dropdown-item">Manage Conferences</a>
                 </div>
               </div>
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Student List</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Search</a>
-                  <a href="team.html" class="dropdown-item">Class of 2025</a>
-                  <a href="team.html" class="dropdown-item">Class of 2026</a>
-                  <a href="team.html" class="dropdown-item">Class of 2027</a>
-                  <a href="team.html" class="dropdown-item">Class of 2028</a>
-                  <a href="team.html" class="dropdown-item">Class of 2029</a>
+                  <a href="teacherblank.html" class="dropdown-item">Search</a>
+                  <a href="teacherblank.html" class="dropdown-item">Class of 2025</a>
+                  <a href="teacherblank.html" class="dropdown-item">Class of 2026</a>
+                  <a href="teacherblank.html" class="dropdown-item">Class of 2027</a>
+                  <a href="teacherblank.html" class="dropdown-item">Class of 2028</a>
+                  <a href="teacherblank.html" class="dropdown-item">Class of 2029</a>
                 </div>
               </div>
             ` : ``}
