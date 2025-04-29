@@ -62,9 +62,9 @@ function navBar(mode = "index") {
             ` : ``}
                         ${mode === "tportal" ? `
               <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manages Courses</a>
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manages Attendance</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">World History - 001</a>
+                  <a href="manageAttendance.html" class="dropdown-item">World History - 001</a>
                   <a href="team.html" class="dropdown-item">World History - 002</a>
                   <a href="team.html" class="dropdown-item">AP US History - 004</a>
                   <a href="team.html" class="dropdown-item">US History - 001</a>

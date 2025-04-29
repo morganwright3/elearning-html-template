@@ -59,6 +59,87 @@ app.get('/get-classes', (req, res) => {
   });
 });
 
+
+/*---------------------------------- GET ATTENDANCE ----------------------------------*/
+app.get('/get-student-attendance', (req, res) => {
+  const studentId = req.query.student_id;
+
+  const sql = `
+    SELECT 
+      a.StudentID,
+      s.Fname,
+      s.Lname,
+      c.CourseName,
+      a.Date,
+      a.Status
+    FROM attendance a
+    JOIN student s ON a.StudentID = s.StudentID
+    JOIN course c ON a.CourseID = c.CourseID
+    WHERE a.StudentID = ?
+    ORDER BY a.Date DESC
+  `;
+
+  con.query(sql, [studentId], (err, results) => {
+    if (err) {
+      console.error('Error fetching attendance:', err.message);
+      return res.status(500).send('Failed to fetch attendance.');
+    }
+    res.json(results);
+  });
+});
+
+
+
+// Get all courses
+app.get('/get-courses', (req, res) => {
+  const sql = `SELECT CourseID, CourseName FROM course`;
+  con.query(sql, (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+// Get students in a course
+app.get('/get-students-in-course', (req, res) => {
+  const courseID = req.query.course_id;
+  const sql = `
+    SELECT s.StudentID, s.Fname, s.Lname
+    FROM student s
+    JOIN enrollment e ON s.StudentID = e.StudentID
+    WHERE e.CourseID = ?
+  `;
+  con.query(sql, [courseID], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+app.post('/submit-attendance', (req, res) => {
+  const { courseID } = req.body;
+  const records = req.body.attendanceRecords;
+
+  for (const studentID in records) {
+    const status = records[studentID];
+
+    if (!studentID || !status || !courseID) {
+      console.error('Missing data:', { studentID, status, courseID });
+      continue; // Skip if invalid
+    }
+
+    const sql = `
+      INSERT INTO attendance (StudentID, CourseID, Date, Status)
+      VALUES (?, ?, CURDATE(), ?)
+    `;
+
+    con.query(sql, [studentID, courseID, status], (err) => {
+      if (err) console.error('Error inserting attendance:', err.message);
+    });
+  }
+
+  res.redirect('/successfulAttendance.html');
+});
+
+
 /*---------------------------------- GET PAYMENTS ----------------------------------*/
 app.get('/get-payments', (req, res) => {
   const sql = `
