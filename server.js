@@ -48,18 +48,6 @@ con.connect(function (err) {// Throws error or confirms connection
  console.log("Connected!");
 });
 
-// VIEW FEE STATUS
-app.get('/get-payments', (req, res) => {
-  const query = "SELECT PaymentID, PaymentDate, Amount, Method, Status FROM payment";
-
-  con.query(query, (err, results) => {
-      if (err) {
-          console.error('Error fetching payments:', err.message);
-          return res.status(500).send('Failed to fetch payments.');
-      }
-      res.json(results); // send back the payment records as JSON
-  });
-});
 
 // VIEW COURSE SEAT STATUS
 app.get('/get-classes', (req, res) => {
@@ -70,6 +58,57 @@ app.get('/get-classes', (req, res) => {
     res.json(results); // send back all courses + seat numbers
   });
 });
+
+/*---------------------------------- GET PAYMENTS ----------------------------------*/
+app.get('/get-payments', (req, res) => {
+  const sql = `
+SELECT 
+  p.StudentID,
+  s.Fname AS FirstName,  -- FIXED
+  s.Lname AS LastName,   -- FIXED
+  p.PaymentID,
+  p.PaymentDate,
+  p.Amount,
+  p.Method,
+  p.Status
+FROM payment p
+JOIN student s ON p.StudentID = s.StudentID
+ORDER BY p.Status DESC, p.PaymentDate DESC;
+  `;
+
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching payments:', err.message);
+      return res.status(500).send('Failed to fetch payments.');
+    }
+    res.json(results);
+  });
+});
+
+// SUBMIT PAYMENT
+app.post('/submit-payment', (req, res) => {
+  const { student_id, amount, billing_name, method } = req.body;
+
+  let properMethod = method;
+  if (method === 'credit_card') properMethod = 'Credit Card';
+  if (method === 'paypal') properMethod = 'PayPal';
+  if (method === 'cash') properMethod = 'Cash';
+
+  const sql = `
+    INSERT INTO payment (StudentID, PaymentDate, Amount, Method, Status)
+    VALUES (?, NOW(), ?, ?, 'Pending')
+  `;
+
+  con.query(sql, [student_id, amount, properMethod], (err, result) => {
+    if (err) {
+      console.error('Error inserting payment:', err.message);
+      return res.status(500).send('Failed to submit payment.');
+    }
+    console.log('Payment inserted successfully.');
+    res.redirect('/successfulPayment.html');
+  });
+});
+
 
 /*---------------------------------- REGISTER FOR COURSE ----------------------------------*/
 app.post('/register', (req, res) => {

@@ -62,6 +62,34 @@
     </div>
     <!-- Header End -->
 
+    <form action="/submit-payment" method="POST" class="payment-form">
+        <label for="student-id">Student ID:</label>
+        <input type="text" name="student_id" required>
+      
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" step="0.01" required>
+      
+        <label for="billing-name">Billing Name:</label>
+        <input type="text" name="billing_name" required>
+      
+        <label for="payment-method">Payment Method:</label>
+        <select name="method" required>
+          <option value="credit_card">Credit Card</option>
+          <option value="paypal">PayPal</option>
+          <option value="cash">Cash</option>
+        </select>
+      
+        <button type="submit">Pay Tuition</button>
+      </form>
+
+     <!-- Payment Status Table Start -->
+    <div class="container my-5">
+        <h3 class="mb-4">Your Payment Records</h3>
+        <div id="paymentTable">
+            <!-- Table will load here -->
+        </div>
+    </div>
+
     <!-- Payment Status Table Start -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -76,6 +104,7 @@
                             <table class="table table-striped">
                                 <thead class="table-primary">
                                     <tr>
+                                        <th>Student ID</th>
                                         <th>Student Name</th>
                                         <th>Payment ID</th>
                                         <th>Date</th>
@@ -87,17 +116,19 @@
                                 <tbody>
                         `;
                         data.forEach(row => {
-                            table += `
-                                <tr>
-                                    <td>${row.StudentName}</td>
-                                    <td>${row.PaymentID}</td>
-                                    <td>${row.PaymentDate}</td>
-                                    <td>$${parseFloat(row.Amount).toFixed(2)}</td>
-                                    <td>${row.Method}</td>
-                                    <td>${row.Status}</td>
-                                </tr>
-                            `;
-                        });
+  table += `
+    <tr>
+      <td>${row.StudentID}</td>
+      <td>${row.FirstName} ${row.LastName}</td>
+      <td>${row.PaymentID}</td>
+      <td>${new Date(row.PaymentDate).toLocaleDateString()}</td>
+      <td>$${parseFloat(row.Amount).toFixed(2)}</td>
+      <td>${row.Method}</td>
+      <td>${row.Status}</td>
+    </tr>
+  `;
+});
+
                         table += `
                                 </tbody>
                             </table>
