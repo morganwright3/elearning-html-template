@@ -1,8 +1,6 @@
 /* Incorporated into the design from W3schools: W3.CSS 4.15 December 2020 by Jan Egil and Borge Refsnes */
 /*-------------------------------------- UHM ITM354 Final Project --------------------------------------*/
 
-hello
-hiiiii
 
 /*---------------------------------- GENERAL FUNCTIONS USED EVERWHERE ----------------------------------*/
 
@@ -47,7 +45,7 @@ function navBar(mode = "index") {
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Permission Slips</a>
                   <a href="team.html" class="dropdown-item">Register For A Club</a>
-                  <a href="team.html" class="dropdown-item">Activity Waiver</a>
+                  <a href="activityWaiver.html" class="dropdown-item">Activity Waiver</a>
                   <a href="team.html" class="dropdown-item">Event Flyers and Downloads</a>
                 </div>
               </div>
