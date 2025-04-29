@@ -47,7 +47,7 @@ function navBar(mode = "index") {
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Permission Slips</a>
                   <a href="team.html" class="dropdown-item">Register For A Club</a>
-                  <a href="team.html" class="dropdown-item">Activity Waiver</a>
+                  <a href="activityWaiver.html" class="dropdown-item">Activity Waiver</a>
                   <a href="team.html" class="dropdown-item">Event Flyers and Downloads</a>
                 </div>
               </div>
