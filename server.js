@@ -16,6 +16,7 @@ let userLoggedin = {};
 const fs = require('fs');
 const { type } = require('os');
 
+
 app.use(express.static('./public'));
 app.use(myParser.urlencoded({ extended: true }));
 
@@ -60,6 +61,36 @@ app.get('/get-payments', (req, res) => {
   });
 });
 
+// VIEW COURSE SEAT STATUS
+app.get('/get-classes', (req, res) => {
+  const sql = `SELECT CourseID, CourseName, AvailableSeats FROM course`;
+
+  con.query(sql, (err, results) => {
+    if (err) throw err;
+    res.json(results); // send back all courses + seat numbers
+  });
+});
+
+/*---------------------------------- REGISTER FOR COURSE ----------------------------------*/
+app.post('/register', (req, res) => {
+  const { first_name, last_name, email, phone, class: course_id } = req.body;
+
+  const sql = `
+    UPDATE course
+    SET AvailableSeats = AvailableSeats - 1
+    WHERE CourseID = ? AND AvailableSeats > 0
+  `;
+
+  con.query(sql, [course_id], (err, result) => {
+    if (err) throw err;
+
+    if (result.affectedRows > 0) {
+      res.redirect('/successfulRegistration.html');
+    } else {
+      res.send('Sorry, no seats available for this class.');
+    }
+  });
+});
 /*---------------------------------- LOGIN/LOGOUT/REGISTER ----------------------------------*/
 
 app.post('/login', (request, response) => {

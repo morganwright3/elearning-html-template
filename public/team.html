@@ -74,7 +74,7 @@
                 <h6 class="section-title bg-white text-center text-primary px-3">Class Registration</h6>
                 <h1 class="mb-5">Register for Your Classes</h1>
             </div>
-            <form action="#" method="post">
+            <form action="/register" method="post">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="first-name" class="form-label">First Name</label>
@@ -96,11 +96,10 @@
                         <label for="class" class="form-label">Select Class</label>
                         <select class="form-select" id="class" name="class" required>
                             <option value="">Select a Class</option>
-                            <option value="Algebra II">Algebra II</option>
-                            <option value="World History">World History</option>
-                            <option value="AP US History">AP US History </option>
-                            <option value="English">English</option>
-                            <option value="Calculus">Calculus</option>
+                            <option value="101">World History</option>
+                            <option value="102">World History (Freshman)</option>
+                            <option value="103">AP US History</option>
+                            <option value="104">US History</option>
                         </select>
                     </div>
                     <div class="col-md-12">
@@ -132,6 +131,34 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    
+    <script>
+        window.onload = function() {
+          fetch('/get-classes')
+            .then(response => response.json())
+            .then(data => {
+              let classSelect = document.getElementById('class');
+              classSelect.innerHTML = '<option value="">Select a Class</option>';
+              data.forEach(course => {
+                if (course.AvailableSeats > 0) { // only show classes with available seats
+                  classSelect.innerHTML += `
+                    <option value="${course.CourseID}">
+                      ${course.CourseName} (${course.AvailableSeats} seats left)
+                    </option>
+                  `;
+                } else {
+                  classSelect.innerHTML += `
+                    <option value="${course.CourseID}" disabled>
+                      ${course.CourseName} (FULL)
+                    </option>
+                  `;
+                }
+              });
+            })
+            .catch(error => console.error('Error loading classes:', error));
+        }
+      </script>
+      
 </body>
 
 </html>
