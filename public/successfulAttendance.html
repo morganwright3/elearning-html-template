@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>My Attendance</title>
+    <meta charset="utf-8">
+    <title>Registration Successful</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-    <!-- Navigation Bar -->
+    <!-- Navigation Script -->
     <script src="./functions.js"></script>
     <script>navBar("sportal");</script>
 
@@ -44,11 +45,12 @@
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">View Attendance</h1>
+                    <h1 class="display-3 text-white animated slideInDown">Attendance Successful</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
                             <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Attendance</li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Student</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Confirmation</li>
                         </ol>
                     </nav>
                 </div>
@@ -57,68 +59,18 @@
     </div>
     <!-- Header End -->
 
-    <!-- Attendance Table Start -->
-    <div class="container my-5">
-        <h3 class="text-center mb-4">Your Attendance Records</h3>
-        <div id="attendanceTable" class="table-responsive"></div>
+    <!-- Confirmation Message -->
+    <div class="container-xxl py-5">
+        <div class="container text-center">
+            <h2 class="text-success mb-4">🎉 Thank you for your attendance!</h2>
+            <a href="/teacherPortal.html" class="btn btn-primary py-3 px-5">Go to Teacher Portal</a>
+        </div>
     </div>
-    <!-- Attendance Table End -->
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/get-student-attendance?student_id=1') // Later dynamic with session
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        document.getElementById('attendanceTable').innerHTML = "<p>No attendance records found.</p>";
-                    } else {
-                        let table = `
-                            <table class="table table-striped">
-<thead class="table-primary">
-<tr>
-  <th>Student ID</th>
-  <th>Student Name</th>
-  <th>Course</th>
-  <th>Date</th>
-  <th>Status</th>
-</tr>
-</thead>
-                                <tbody>
-                        `;
-
-                        data.forEach(row => {
-                            const formattedDate = new Date(row.Date).toLocaleDateString('en-US'); // 📅 Fix the ugly Date
-
-                            table += `
-                                <tr>
-                                    <td>${row.StudentID}</td>
-                                    <td>${row.Fname} ${row.Lname}</td>
-                                    <td>${row.CourseName}</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${row.Status}</td>
-                                </tr>
-                            `;
-                        });
-
-                        table += `
-                                </tbody>
-                            </table>
-                        `;
-
-                        document.getElementById('attendanceTable').innerHTML = table;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching attendance:', error);
-                });
-        });
-    </script>
-
-    <!-- Footer Start -->
+    <!-- Footer -->
     <script>footer()</script>
-    <!-- Footer End -->
 
-    <!-- Back to Top -->
+    <!-- Back to Top Button -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <!-- JS Libraries -->
@@ -129,7 +81,8 @@
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Template Javascript -->
+    <!-- Main JS -->
     <script src="js/main.js"></script>
 </body>
+
 </html>
