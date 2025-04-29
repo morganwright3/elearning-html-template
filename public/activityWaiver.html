@@ -7,6 +7,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    
+    <!---------------------------- Navigation Bar Start ---------------------------->
+    <script src="./functions.js"></script>
+    <script>navBar("sportal");</script>
+    <!----------------------------- Navigation Bar End ----------------------------->
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -41,12 +46,6 @@
     <!-- Spinner End -->
 
 
-    <!---------------------------- Navigation Bar Start ---------------------------->
-<script src="./functions.js"></script>
-<script>navBar("sportal");</script>
-<!----------------------------- Navigation Bar End ----------------------------->
-
-
     <!-- Header Start -->
     <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -67,51 +66,17 @@
     <!-- Header End -->
 
 
-    <!-- Registration Form Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Activity Waiver</h6>
-                <h1 class="mb-5">Sign Waiver For Activities</h1>
-            </div>
-            <form action="#" method="post">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="first-name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="first-name" name="first-name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="last-name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="last-name" name="last-name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="class" class="form-label">Select Class</label>
-                        <select class="form-select" id="class" name="class" required>
-                            <option value="">Select a Class</option>
-                            <option value="Algebra II">Algebra II</option>
-                            <option value="World History">World History</option>
-                            <option value="AP US History">AP US History </option>
-                            <option value="English">English</option>
-                            <option value="Calculus">Calculus</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary w-100 py-3">Register for Class</button>
-                    </div>
-                </div>
-            </form>
+    <div class="container my-5">
+        <div class="p-5 bg-light border rounded text-center">
+            <h4 class="mb-3">Need a Copy of the Waiver?</h4>
+            <a href="/img/waiver.pdf" download class="btn btn-primary">
+                Click Here to Download the PDF
+            </a>
         </div>
     </div>
-    <!-- Registration Form End -->
-        
+
+
+
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
