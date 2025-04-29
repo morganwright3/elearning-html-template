@@ -3,10 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <title>View and Download Report Cards</title>
+    <title>Report Card</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+
+    <!---------------------------- Navigation Bar Start ---------------------------->
+    <script src="./functions.js"></script>
+    <script>navBar("sportal");</script>
+    <!----------------------------- Navigation Bar End ----------------------------->
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
@@ -29,53 +34,6 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-
-<!-- Template Stylesheet -->
-<link href="css/style.css" rel="stylesheet">
-
-<style>
-    .report-card {
-        margin: 30px auto;
-        max-width: 800px;
-        border: 1px solid #ddd;
-        padding: 20px;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-    }
-
-    .report-card h3 {
-        text-align: center;
-        color: #333;
-    }
-
-    .report-card .subject {
-        margin-bottom: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #555;
-    }
-
-    .report-card .details {
-        margin-left: 20px;
-    }
-
-    .report-card .download-btn {
-        display: block;
-        width: 200px;
-        margin: 20px auto;
-        text-align: center;
-        background-color: #007bff;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-        text-decoration: none;
-    }
-
-    .report-card .download-btn:hover {
-        background-color: #0056b3;
-    }
-</style>
-
 </head>
 
 <body>
@@ -88,13 +46,6 @@
     <!-- Spinner End -->
 
 
-    <!---------------------------- Navigation Bar Start ---------------------------->
-<script src="./functions.js"></script>
-<script>navBar("sportal");</script>
-<!----------------------------- Navigation Bar End ----------------------------->
-
-
-
     <!-- Header Start -->
     <div class="container-fluid bg-primary py-5 mb-5 page-header">
         <div class="container py-5">
@@ -102,9 +53,10 @@
                 <div class="col-lg-10 text-center">
                     <h1 class="display-3 text-white animated slideInDown">Download Your Report Card</h1>
                     <nav aria-label="breadcrumb">
+                    <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
                             <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Download Report Card</li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Report Card</li>
                         </ol>
                     </nav>
                 </div>
@@ -113,86 +65,25 @@
     </div>
     <!-- Header End -->
 
-<!-- Report Card View Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">View Your Report Card</h6>
-            <h1 class="mb-5">Check Your Report Card</h1>
-        </div>
 
-        <!-- Report Card Section -->
-        <div class="report-card">
-            <h3>Your Report Card</h3>
-            
-            <!-- Report Card Details -->
-            <div class="subject">
-                Algebra II
-            </div>
-            <div class="details">
-                <p>Grade: A</p>
-                <p>Comments: Excellent performance, keep up the good work!</p>
-            </div>
-
-            <div class="subject">
-                World History
-            </div>
-            <div class="details">
-                <p>Grade: B+</p>
-                <p>Comments: Good understanding of historical concepts.</p>
-            </div>
-
-            <div class="subject">
-                AP US History
-            </div>
-            <div class="details">
-                <p>Grade: A-</p>
-                <p>Comments: Solid grasp of historical events, but more focus needed on essays.</p>
-            </div>
-
-            <div class="subject">
-                English
-            </div>
-            <div class="details">
-                <p>Grade: B</p>
-                <p>Comments: Good efforts in writing assignments. Could improve grammar skills.</p>
-            </div>
-
-            <div class="subject">
-                Calculus
-            </div>
-            <div class="details">
-                <p>Grade: A</p>
-                <p>Comments: Outstanding performance in solving complex problems.</p>
-            </div>
-
-            <!-- Download Report Card Button -->
-            <a href="path/to/report_card.pdf" download class="download-btn">Download Report Card</a>
-        </div>
+<div class="container my-5">
+    <div class="p-5 bg-light border rounded text-center">
+        <h4 class="mb-3">Report Card Preview</h4>
+        <iframe src="/img/report_card.pdf" width="100%" height="800px" style="border: 1px solid #ccc;"></iframe>
+        <br><br>
+        <h4 class="mb-3">Download Report Card</h4>
+        <a href="/img/report_card.pdf" download class="btn btn-primary">
+            Click Here to Download the PDF
+        </a>
     </div>
 </div>
-<!-- Report Card View End -->
-        
-
- <!---------------------------- Footer Start ---------------------------->    
- <script>footer()</script>
- <!----------------------------- Footer End -----------------------------> 
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+<script>
+    window.addEventListener("load", () => {
+      const spinner = document.getElementById("spinner");
+      if (spinner) {
+        spinner.classList.remove("show");
+      }
+    });
+  </script>
 </body>
-
 </html>
