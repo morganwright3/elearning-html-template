@@ -59,6 +59,134 @@ app.get('/get-classes', (req, res) => {
   });
 });
 
+/*---------------------------------- GET Transcripts ----------------------------------*/
+app.post('/submit-transcript-request', (req, res) => {
+  const { studentID, deliveryMethod, notes } = req.body;
+
+  // First, try to find in Alumni table
+  const findAlumniQuery = `SELECT AlumniID FROM Alumni WHERE StudentID = ?`;
+
+  con.query(findAlumniQuery, [studentID], (err, alumniResults) => {
+    if (err) {
+      console.error('Error finding alumni:', err);
+      return res.send("Internal error.");
+    }
+
+    if (alumniResults.length > 0) {
+      // Alumni found, use AlumniID
+      const alumniID = alumniResults[0].AlumniID;
+      insertTranscriptRequest(alumniID, deliveryMethod, notes, res);
+    } else {
+      // Alumni not found, create a new Alumni record based on student info
+      const findStudentQuery = `SELECT StudentID, Fname, Lname, Email FROM Student WHERE StudentID = ?`;
+
+      con.query(findStudentQuery, [studentID], (err2, studentResults) => {
+        if (err2 || studentResults.length === 0) {
+          console.error('Error finding student:', err2);
+          return res.send("Student not found.");
+        }
+
+        const student = studentResults[0];
+        const insertAlumniQuery = `
+          INSERT INTO Alumni (StudentID, GradYear, Email, PhoneNumber, Address)
+          VALUES (?, YEAR(CURDATE()), ?, '', '')
+        `;
+
+        con.query(insertAlumniQuery, [student.StudentID, student.Email], (err3, insertResult) => {
+          if (err3) {
+            console.error('Error inserting new alumni:', err3);
+            return res.send("Error creating alumni record.");
+          }
+
+          const newAlumniID = insertResult.insertId;
+          insertTranscriptRequest(newAlumniID, deliveryMethod, notes, res);
+        });
+      });
+    }
+  });
+});
+
+function insertTranscriptRequest(alumniID, deliveryMethod, notes, res) {
+  const insertRequestQuery = `INSERT INTO TranscriptRequest (AlumniID, DeliveryMethod, Notes) VALUES (?, ?, ?)`;
+
+  con.query(insertRequestQuery, [alumniID, deliveryMethod, notes], (err4) => {
+    if (err4) {
+      console.error('Error inserting transcript request:', err4);
+      return res.send("Error submitting transcript request.");
+    }
+    res.redirect('/successfulTranscripts.html');
+  });
+}
+
+
+// Get Transcript Requests for a Specific Student
+app.get('/get-transcript-requests', (req, res) => {
+  const studentID = req.query.studentID;
+
+  const findStudentQuery = `SELECT StudentID, Fname AS FirstName, Lname AS LastName FROM Student WHERE StudentID = ?`;
+  con.query(findStudentQuery, [studentID], (err, results) => {
+      if (err || results.length === 0) {
+          console.error('Error finding student:', err);
+          return res.json([]);
+      }
+
+      const student = results[0];
+      const alumniID = student.StudentID;
+      const requestQuery = `
+          SELECT RequestDate, DeliveryMethod, Status
+          FROM TranscriptRequest
+          WHERE AlumniID = ?
+          ORDER BY RequestDate DESC
+      `;
+
+      con.query(requestQuery, [alumniID], (err2, requestResults) => {
+          if (err2) {
+              console.error('Error fetching transcript requests:', err2);
+              return res.json([]);
+          }
+
+          // Format the dates and include student name
+          const formattedRequests = requestResults.map(request => {
+              const formattedDate = new Date(request.RequestDate).toLocaleDateString();
+              return {
+                  ...request,
+                  RequestDate: formattedDate,
+                  StudentID: student.StudentID,
+                  StudentName: `${student.FirstName} ${student.LastName}`,
+              };
+          });
+
+          res.json(formattedRequests);
+      });
+  });
+});
+
+app.get('/admin/get-transcript-requests', (req, res) => {
+  const query = `
+      SELECT 
+          tr.RequestID,
+          a.StudentID,
+          CONCAT(s.Fname, ' ', s.Lname) AS StudentName,
+          tr.RequestDate,
+          tr.DeliveryMethod,
+          tr.Status
+      FROM TranscriptRequest tr
+      JOIN Alumni a ON tr.AlumniID = a.AlumniID
+      JOIN Student s ON a.StudentID = s.StudentID
+ORDER BY tr.RequestID DESC
+  `;
+
+  con.query(query, (err, results) => {
+      if (err) {
+          console.error('Error fetching admin transcript requests:', err);
+          return res.status(500).send('Failed to fetch transcript requests.');
+      }
+      res.json(results);
+  });
+});
+
+
+
 
 /*---------------------------------- GET ATTENDANCE ----------------------------------*/
 app.get('/get-student-attendance', (req, res) => {

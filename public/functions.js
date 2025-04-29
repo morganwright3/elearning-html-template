@@ -46,7 +46,8 @@ function navBar(mode = "index") {
                   <a href="team.html" class="dropdown-item">Permission Slips</a>
                   <a href="team.html" class="dropdown-item">Register For A Club</a>
                   <a href="activityWaiver.html" class="dropdown-item">Activity Waiver</a>
-                  <a href="team.html" class="dropdown-item">Event Flyers and Downloads</a>
+                  <a href="team.html" class="dropdown-item">Event Flyers and Downloads</a>                  
+                  <a href="transcriptRequest.html" class="dropdown-item">Request Official Transcript</a>
                 </div>
               </div>
 
@@ -89,6 +90,7 @@ function navBar(mode = "index") {
                   <a href="team.html" class="dropdown-item">Announcements</a>
                   <a href="team.html" class="dropdown-item">Email</a>
                   <a href="team.html" class="dropdown-item">Private Messages</a>
+                  <a href="team.html" class="dropdown-item">Manage Conferences</a>
                 </div>
               </div>
 
@@ -121,6 +123,7 @@ function navBar(mode = "index") {
                   <a href="team.html" class="dropdown-item">Upload/Edit Report Cards</a>
                   <a href="team.html" class="dropdown-item">Registerr Students For Classes</a>
                   <a href="team.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
+                  <a href="trackTranscriptRequests.html" class="dropdown-item">Track Transcript Requests</a>
                 </div>
               </div>
 
