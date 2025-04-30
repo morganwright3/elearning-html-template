@@ -447,8 +447,29 @@ app.post('/submit-payment', (req, res) => {
   });
 });
 
+/*---------------------------------- Admin Enrollment Status ----------------------------------*/
 
+app.get('/admin/enrollment-stats', (req, res) => {
+  const sql = `
+SELECT 
+  c.CourseID,
+  c.CourseName,
+  COUNT(e.StudentID) AS EnrolledCount,
+  c.AvailableSeats,
+  (COUNT(e.StudentID) + c.AvailableSeats) AS MaxCapacity
+FROM course c
+LEFT JOIN enrollment e ON c.CourseID = e.CourseID
+GROUP BY c.CourseID, c.CourseName, c.AvailableSeats
+  `;
 
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching enrollment stats:", err);
+      return res.status(500).send("Error fetching enrollment stats.");
+    }
+    res.json(results);
+  });
+});
 
 
 /*---------------------------------- REGISTER FOR COURSE ----------------------------------*/

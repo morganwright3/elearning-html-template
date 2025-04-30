@@ -136,6 +136,8 @@ function navBar(mode = "index") {
                   <a href="adminblank.html" class="dropdown-item">Registerr Students For Classes</a>
                   <a href="adminblank.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
                   <a href="trackTranscriptRequests.html" class="dropdown-item">Track Transcript Requests</a>
+                  <a href="enrollmentReport.html" class="dropdown-item">Enrollment Report</a>
+
                 </div>
               </div>
 
