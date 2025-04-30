@@ -1,167 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <title>Fee Payment Status</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+  <meta charset="UTF-8" />
+  <title>Fee Payment Status</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Navigation Bar -->
-    <script src="./functions.js"></script>
-    <script>navBar("sportal");</script>
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+  <!-- Fonts + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Styles -->
+  <link href="lib/animate/animate.min.css" rel="stylesheet">
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom Scripts -->
+  <script src="./functions.js"></script>
+  <script>navBar("sportal");</script>
+  <script>styleStuff();</script>
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #f7f7f7;
+    }
+  </style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
+  <div class="container mt-5">
+    <h1 class="mb-4">Fee Payment Status</h1>
 
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Fee Payment Status</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Payment Status</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-
-    <form action="/submit-payment" method="POST" class="payment-form">
-        <label for="student-id">Student ID:</label>
-        <input type="text" name="student_id" required>
-      
-        <label for="amount">Amount:</label>
-        <input type="number" name="amount" step="0.01" required>
-      
-        <label for="billing-name">Billing Name:</label>
-        <input type="text" name="billing_name" required>
-      
-        <label for="payment-method">Payment Method:</label>
-        <select name="method" required>
+    <!-- Manual Payment Form -->
+    <h3>Make a Manual Payment</h3>
+    <form action="/submit-payment" method="POST" class="row g-3 mb-5">
+      <div class="col-md-2"><input type="text" class="form-control" name="student_id" placeholder="Student ID" required /></div>
+      <div class="col-md-2"><input type="number" class="form-control" step="0.01" name="amount" placeholder="Amount" required /></div>
+      <div class="col-md-3"><input type="text" class="form-control" name="billing_name" placeholder="Billing Name" required /></div>
+      <div class="col-md-2">
+        <select class="form-select" name="method" required>
           <option value="credit_card">Credit Card</option>
           <option value="paypal">PayPal</option>
           <option value="cash">Cash</option>
         </select>
-      
-        <button type="submit">Pay Tuition</button>
-      </form>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" name="fee_type">
+          <option value="Tuition">Tuition</option>
+          <option value="Field Trip">Field Trip</option>
+          <option value="Library">Library</option>
+        </select>
+      </div>
+      <div class="col-md-1"><button class="btn btn-primary w-100" type="submit">Submit</button></div>
+    </form>
 
-     <!-- Payment Status Table Start -->
-    <div class="container my-5">
-        <h3 class="mb-4">Your Payment Records</h3>
-        <div id="paymentTable">
-            <!-- Table will load here -->
-        </div>
-    </div>
+    <!-- Greeting + Balance + Records -->
+    <h2><p id="greeting"></p></h2>
+    <h3>Your Payment Records</h3>
+    <p id="balance"></p>
+    <div id="payment-records"></div>
+  </div>
 
-    <!-- Payment Status Table Start -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/get-payments')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        document.getElementById('paymentTable').innerHTML = "<p>No payments found.</p>";
-                    } else {
-                        let table = `
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th>Student ID</th>
-                                        <th>Student Name</th>
-                                        <th>Payment ID</th>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                        <th>Method</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                        `;
-                        data.forEach(row => {
-  table += `
-    <tr>
-      <td>${row.StudentID}</td>
-      <td>${row.FirstName} ${row.LastName}</td>
-      <td>${row.PaymentID}</td>
-      <td>${new Date(row.PaymentDate).toLocaleDateString()}</td>
-      <td>$${parseFloat(row.Amount).toFixed(2)}</td>
-      <td>${row.Method}</td>
-      <td>${row.Status}</td>
-    </tr>
-  `;
-});
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const email = getCookie("username");
+      try {
+        // Get balance and student name
+        const res1 = await fetch(`/student/outstanding-balance?email=${email}`);
+        const data1 = await res1.json();
 
-                        table += `
-                                </tbody>
-                            </table>
-                        </div>
-                        `;
-                        document.getElementById('paymentTable').innerHTML = table;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching payment data:', error);
-                });
+        document.getElementById("greeting").textContent = `Hello ${data1.FullName}`;
+        document.getElementById("balance").textContent = `Your outstanding balance is: $${data1.OutstandingBalance.toFixed(2)}`;
+
+        // Get payment history
+        const res2 = await fetch('/get-payments');
+        const payments = await res2.json();
+
+        const tableDiv = document.getElementById('payment-records');
+        if (!payments.length) {
+          tableDiv.innerHTML = "<p>No payment records found.</p>";
+          return;
+        }
+
+        const table = document.createElement("table");
+        table.innerHTML = `
+          <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Fee Type</th>
+          </tr>
+        `;
+
+        payments.forEach(p => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${new Date(p.PaymentDate).toLocaleDateString()}</td>
+            <td>$${p.Amount.toFixed(2)}</td>
+            <td>${p.Method}</td>
+            <td>${p.Status}</td>
+<td>${p.FeeType ? p.FeeType : "Tuition"}</td>
+          `;
+          table.appendChild(row);
         });
-        </script>
-        <!-- Payment Status Table END -->
 
+        tableDiv.appendChild(table);
+      } catch (err) {
+        console.error("Error loading payment records:", err);
+      }
+    });
 
-    <!-- Footer Start -->
-    <script>footer()</script>
-    <!-- Footer End -->
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    function getCookie(name) {
+      const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return match ? match.pop() : '';
+    }
+  </script>
+      <!-- Footer Start -->
+      <script>footer();</script>
+      <!-- Footer End -->
 </body>
-
 </html>

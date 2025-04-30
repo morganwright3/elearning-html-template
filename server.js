@@ -323,7 +323,7 @@ app.get('/get-my-grades', (req, res) => {
   FROM student s
   JOIN grade g ON s.StudentID = g.StudentID
   JOIN course c ON g.CourseID = c.CourseID
-  WHERE s.Email = ?
+WHERE LOWER(s.Email) = LOWER(?)
 `;
 
   const params = [studentEmail];
@@ -355,22 +355,28 @@ app.get('/get-my-grades', (req, res) => {
 
 /*---------------------------------- GET PAYMENTS ----------------------------------*/
 app.get('/get-payments', (req, res) => {
+  const email = req.cookies.username;
+  console.log("/get-payments: email from cookie:", email);
+
+  if (!email) return res.status(400).send("Missing email");
+
   const sql = `
-SELECT 
-  p.StudentID,
-  s.Fname AS FirstName,  -- FIXED
-  s.Lname AS LastName,   -- FIXED
-  p.PaymentID,
-  p.PaymentDate,
-  p.Amount,
-  p.Method,
-  p.Status
-FROM payment p
-JOIN student s ON p.StudentID = s.StudentID
-ORDER BY p.Status DESC, p.PaymentDate DESC;
+    SELECT 
+      p.StudentID,
+      s.Fname AS FirstName,
+      s.Lname AS LastName,
+      p.PaymentID,
+      p.PaymentDate,
+      p.Amount,
+      p.Method,
+      p.Status
+    FROM payment p
+    JOIN student s ON p.StudentID = s.StudentID
+    WHERE LOWER(s.Email) = LOWER(?)
+    ORDER BY p.Status DESC, p.PaymentDate DESC;
   `;
 
-  con.query(sql, (err, results) => {
+  con.query(sql, [email], (err, results) => {
     if (err) {
       console.error('Error fetching payments:', err.message);
       return res.status(500).send('Failed to fetch payments.');
@@ -379,9 +385,47 @@ ORDER BY p.Status DESC, p.PaymentDate DESC;
   });
 });
 
+
+app.get('/student/outstanding-balance', (req, res) => {
+  const email = req.query.email;
+  console.log("/student/outstanding-balance email:", email);
+
+  if (!email) {
+    console.error("Missing email in request.");
+    return res.status(400).json({ error: "Missing student email" });
+  }
+
+  const sql = `
+    SELECT 
+      s.StudentID,
+      CONCAT(s.Fname, ' ', s.Lname) AS FullName,
+      10000 AS TotalTuition,
+      IFNULL(SUM(CASE WHEN p.Status = 'Paid' THEN p.Amount ELSE 0 END), 0) AS TotalPaid,
+      10000 - IFNULL(SUM(CASE WHEN p.Status = 'Paid' THEN p.Amount ELSE 0 END), 0) AS OutstandingBalance
+    FROM student s
+    LEFT JOIN payment p ON s.StudentID = p.StudentID
+    WHERE LOWER(s.Email) = LOWER(?)
+    GROUP BY s.StudentID
+  `;
+
+  con.query(sql, [email], (err, results) => {
+    if (err) {
+      console.error("MySQL error:", err);
+      return res.status(500).json({ error: "SQL error" });
+    }
+
+    if (results.length === 0) {
+      console.warn("No student found with email:", email);
+      return res.status(404).json({});
+    }
+
+    res.json(results[0]);
+  });
+});
+
 // SUBMIT PAYMENT
 app.post('/submit-payment', (req, res) => {
-  const { student_id, amount, billing_name, method } = req.body;
+  const { student_id, amount, billing_name, method, fee_type } = req.body;
 
   let properMethod = method;
   if (method === 'credit_card') properMethod = 'Credit Card';
@@ -389,11 +433,11 @@ app.post('/submit-payment', (req, res) => {
   if (method === 'cash') properMethod = 'Cash';
 
   const sql = `
-    INSERT INTO payment (StudentID, PaymentDate, Amount, Method, Status)
-    VALUES (?, NOW(), ?, ?, 'Pending')
+    INSERT INTO payment (StudentID, PaymentDate, Amount, Method, Status, FeeType)
+    VALUES (?, NOW(), ?, ?, 'Paid', ?)
   `;
 
-  con.query(sql, [student_id, amount, properMethod], (err, result) => {
+  con.query(sql, [student_id, amount, properMethod, fee_type || 'Tuition'], (err, result) => {
     if (err) {
       console.error('Error inserting payment:', err.message);
       return res.status(500).send('Failed to submit payment.');
@@ -402,6 +446,9 @@ app.post('/submit-payment', (req, res) => {
     res.redirect('/successfulPayment.html');
   });
 });
+
+
+
 
 
 /*---------------------------------- REGISTER FOR COURSE ----------------------------------*/
@@ -456,63 +503,51 @@ app.post('/login', (request, response) => {
   const the_username = request.body.username.toLowerCase();
   const the_password = request.body.password;
 
-  // Define query to validate user credentials
   const query = `
     (SELECT Email, Password, Role
      FROM student
      WHERE Email = ?)
      UNION
-     (SELECT Email, Password, Role
+    (SELECT Email, Password, Role
      FROM teacher
      WHERE Email = ?);
   `;
 
   con.query(query, [the_username, the_username], (err, results) => {
-    console.log(`${results[0]}`);
-
     if (err) {
       console.error('Database error:', err);
       return response.status(500).send('Internal Server Error');
     }
 
-    // Check if email exists
     if (results.length === 0) {
       return response.status(401).send('Invalid username or password');
     }
 
     const user = results[0];
 
-    // Check if password exists
     if (user.Password !== the_password) {
       return response.status(401).send('Invalid username or password');
     }
 
-    response.cookie("loggedIn", 1, { expire: Date.now() + 30 * 60 * 1000 }); // 30 min cookie THAT RECORDS WHEN YOU LOG IN
-    response.cookie("username", the_username, { expire: Date.now() + 30 * 60 * 1000 });
+    // ✅ This is where you correctly set the cookie with the actual email
+    response.cookie("loggedIn", 1, { maxAge: 1800000 });
+    response.cookie("username", user.Email, { maxAge: 1800000 }); // store actual email
 
-// REDIRECTING  and giving cookie BASED ON ROLE change this please
+    // Set role cookie and redirect
     if (user.Role === 'student') {
-      console.log(`1`);
-      response.cookie("role", 1, { expire: Date.now() + 30 * 60 * 1000 }); 
+      response.cookie("role", 1, { maxAge: 1800000 });
       return response.redirect('/studentPortal.html');
     } else if (user.Role === 'teacher') {
-      console.log(`2`);
-      response.cookie("role", 2, { expire: Date.now() + 30 * 60 * 1000 }); 
+      response.cookie("role", 2, { maxAge: 1800000 });
       return response.redirect('/teacherPortal.html');
     } else if (user.Role === 'principal') {
-      console.log(`3`);
-      response.cookie("role", 3, { expire: Date.now() + 30 * 60 * 1000 }); 
+      response.cookie("role", 3, { maxAge: 1800000 });
       return response.redirect('/adminPortal.html');
-    };
-
-    // Store User_ID and User_Name in session
-//    request.session.Account_Name = user.User_Name; // User_Name
-//    request.session.Account_ID = user.User_ID;     // User_ID
-
-//    console.log(`User_Name ${user.User_Name} stored in session.`);
-//    console.log(`User_ID ${user.User_ID} stored in session.`);
+    }
   });
 });
+
+
 
 app.post('/register', function (request, response) { 
   let the_username = request.body.username.toLowerCase(); // Account_Email
@@ -562,8 +597,11 @@ app.post('/register', function (request, response) {
   });
 });
 
-app.get('/logout', function (request, response){// Redirects user to home page after logging out
-  response.redirect(`./index.html`)
+app.get('/logout', function (req, res) {
+  res.clearCookie("loggedIn");
+  res.clearCookie("username");
+  res.clearCookie("role");
+  res.redirect('./index.html');
 });
 
 /*---------------------------------- ROOMS SQL ----------------------------------*/
