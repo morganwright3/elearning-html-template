@@ -72,6 +72,16 @@ function navBar(mode = "index") {
                 </div>
               </div>
 
+                <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Grades</a>
+                <div class="dropdown-menu fade-down m-0">
+                 <a href="manageGrades.html" class="dropdown-item">World History - 001</a>
+                  <a href="manageGrades.html" class="dropdown-item">World History - 002</a>
+                  <a href="manageGrades.html" class="dropdown-item">AP US History - 004</a>
+                  <a href="manageGrades.html" class="dropdown-item">US History - 001</a>
+                </div>
+              </div>
+
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Academic Reports</a>
                 <div class="dropdown-menu fade-down m-0">
@@ -110,19 +120,19 @@ function navBar(mode = "index") {
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Users</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Add/Edit/ Delete Users</a>
-                  <a href="team.html" class="dropdown-item">Link Student-Parent Accounts</a>
-                  <a href="team.html" class="dropdown-item">Reset Passwords</a>
-                  <a href="team.html" class="dropdown-item">Assign Roles</a>
+                  <a href="adminblank.html" class="dropdown-item">Add/Edit/ Delete Users</a>
+                  <a href="adminblank.html" class="dropdown-item">Link Student-Parent Accounts</a>
+                  <a href="adminblank.html" class="dropdown-item">Reset Passwords</a>
+                  <a href="adminblank.html" class="dropdown-item">Assign Roles</a>
                 </div>
               </div>
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Academics</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Upload/Edit Report Cards</a>
-                  <a href="team.html" class="dropdown-item">Registerr Students For Classes</a>
-                  <a href="team.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
+                  <a href="adminblank.html" class="dropdown-item">Upload/Edit Report Cards</a>
+                  <a href="adminblank.html" class="dropdown-item">Registerr Students For Classes</a>
+                  <a href="adminblank.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
                   <a href="trackTranscriptRequests.html" class="dropdown-item">Track Transcript Requests</a>
                 </div>
               </div>
@@ -130,20 +140,20 @@ function navBar(mode = "index") {
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Events</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Create/Edit Events and Field Trips</a>
-                  <a href="team.html" class="dropdown-item">Handle Permission Slips and Waivers</a>
-                  <a href="team.html" class="dropdown-item">Upload Flyers and Documents</a>
-                  <a href="team.html" class="dropdown-item">Track Volunteer Sign-Ups</a>
+                  <a href="adminblank.html" class="dropdown-item">Create/Edit Events and Field Trips</a>
+                  <a href="adminblank.html" class="dropdown-item">Handle Permission Slips and Waivers</a>
+                  <a href="adminblank.html" class="dropdown-item">Upload Flyers and Documents</a>
+                  <a href="adminblank.html" class="dropdown-item">Track Volunteer Sign-Ups</a>
                 </div>
               </div>
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Communication</a>
                 <div class="dropdown-menu fade-down m-0">
-                  <a href="team.html" class="dropdown-item">Send Emails and Messages</a>
-                  <a href="team.html" class="dropdown-item">Post Announcements</a>
-                  <a href="team.html" class="dropdown-item">Activity Calendar</a>
-                  <a href="team.html" class="dropdown-item">Message By Class Or Group</a>
+                  <a href="adminblank.html" class="dropdown-item">Send Emails and Messages</a>
+                  <a href="adminblank.html" class="dropdown-item">Post Announcements</a>
+                  <a href="adminblank.html" class="dropdown-item">Activity Calendar</a>
+                  <a href="adminblank.html" class="dropdown-item">Message By Class Or Group</a>
                 </div>
               </div>
             ` : ``}

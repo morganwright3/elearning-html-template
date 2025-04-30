@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Grades</title>
+  <script src="./functions.js"></script>
+  <script>navBar("tportal");</script>
+  <script>styleStuff();</script>
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">Manage Student Grades</h2>
+
+    <!-- Select class -->
+    <label for="classSelect">Select Class:</label>
+    <select id="classSelect" class="form-select mb-4" onchange="loadStudentsForClass()">
+      <option value="">-- Choose a Class --</option>
+      <option value="101">World History - 001</option>
+      <option value="102">World History - 002</option>
+      <option value="103">AP US History - 004</option>
+      <option value="104">US History - 001</option>
+    </select>
+
+    <!-- Grades Table -->
+    <div id="gradeTableContainer"></div>
+  </div>
+
+  <script>
+    function loadStudentsForClass() {
+      const classID = document.getElementById("classSelect").value;
+      if (!classID) {
+        document.getElementById("gradeTableContainer").innerHTML = "";
+        return;
+      }
+    
+      fetch(`/get-students-and-grades?classID=${classID}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.length === 0) {
+            document.getElementById("gradeTableContainer").innerHTML = "<p>No students found.</p>";
+            return;
+          }
+    
+          // Start the table with a placeholder for the average
+          let tableHTML = `
+            <p><strong>Class Average:</strong> <span id="classAverage">Calculating...</span></p>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Name</th>
+                  <th>Last Graded</th>
+                  <th>Current Grade</th>
+                  <th>Update Grade</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+    
+          // Variables to calculate average
+          let total = 0;
+          let count = 0;
+    
+          data.forEach(student => {
+            const grade = parseFloat(student.Grade);
+            const displayGrade = isNaN(grade) ? "Not Yet Graded" : grade.toFixed(2);
+    
+            // Average math
+            if (!isNaN(grade)) {
+              total += grade;
+              count++;
+            }
+    
+            // Build each row
+            tableHTML += `
+              <tr>
+                <td>${student.StudentID}</td>
+                <td>${student.FullName}</td>
+                <td>${student.DateGraded ? new Date(student.DateGraded).toLocaleDateString() : 'N/A'}</td>
+                <td id="currentGrade-${student.StudentID}">${displayGrade}</td>
+                <td>
+                  <input type="text" class="form-control" id="gradeInput-${student.StudentID}" placeholder="e.g. 87">
+                </td>
+                <td>
+                  <button class="btn btn-success btn-sm" onclick="updateGrade(${student.StudentID}, ${classID})">Save</button>
+                </td>
+              </tr>
+            `;
+          });
+    
+          tableHTML += "</tbody></table>";
+          document.getElementById("gradeTableContainer").innerHTML = tableHTML;
+    
+          // Set the class average
+          const avg = count > 0 ? (total / count).toFixed(2) : "N/A";
+          document.getElementById("classAverage").innerText = avg;
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById("gradeTableContainer").innerHTML = "<p>Error loading students.</p>";
+        });
+    }
+    </script>
+    <script>
+        function updateGrade(studentID, classID) {
+          const input = document.getElementById(`gradeInput-${studentID}`);
+          const newGrade = input.value.trim();
+        
+          if (!newGrade || isNaN(newGrade)) {
+            alert("Please enter a valid number for the grade.");
+            return;
+          }
+        
+          fetch('/update-grade', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ StudentID: studentID, ClassID: classID, Grade: newGrade })
+          })
+          .then(res => res.json())
+          .then(result => {
+            if (result.success) {
+              loadStudentsForClass(); // reloads entire table including recalculated average
+            } else {
+              alert("Failed to update grade.");
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Server error while updating grade.");
+          });
+        }
+        </script>
+        
+    
+</body>
+</html>

@@ -8,17 +8,18 @@ var app = express();
 var myParser = require("body-parser");
 var mysql = require('mysql');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
+app.use(express.static('./public'));
+app.use(myParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
 
 let userLoggedin = {};
 
 const fs = require('fs');
 const { type } = require('os');
-
-
-app.use(express.static('./public'));
-app.use(myParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   if (typeof req.session.reservation === 'undefined') {
@@ -267,6 +268,90 @@ app.post('/submit-attendance', (req, res) => {
   res.redirect('/successfulAttendance.html');
 });
 
+/*---------------------------------- Manage Grades ----------------------------------*/
+app.get('/get-students-and-grades', (req, res) => {
+  const courseID = req.query.classID;
+  const sql = `
+SELECT 
+  s.StudentID, 
+  CONCAT(s.Fname, ' ', s.Lname) AS FullName,
+  ROUND(AVG(g.Grade), 2) AS Grade,
+  COUNT(g.Grade) AS GradeCount,
+  MAX(g.DateGraded) AS DateGraded
+FROM student s
+JOIN enrollment e ON s.StudentID = e.StudentID
+LEFT JOIN grade g ON g.StudentID = s.StudentID AND g.CourseID = e.CourseID
+WHERE e.CourseID = ?
+GROUP BY s.StudentID
+
+  `;
+
+  con.query(sql, [courseID], (err, results) => {
+    if (err) {
+      console.error('Error retrieving grades:', err.message);
+      return res.status(500).send('Failed to retrieve grades.');
+    }
+    res.json(results);
+  });
+});
+
+app.post('/update-grade', (req, res) => {
+  const { StudentID, ClassID, Grade } = req.body;
+
+  const sql = `INSERT INTO grade (Grade, StudentID, CourseID, DateGraded) VALUES (?, ?, ?, CURDATE())`;
+
+  con.query(sql, [Grade, StudentID, ClassID], (err) => {
+    if (err) {
+      console.error('Error inserting grade:', err.message);
+      return res.status(500).json({ success: false });
+    }
+
+    // ✅ Only send one response here
+    res.json({ success: true });
+  });
+});
+
+//get grades (student)
+app.get('/get-my-grades', (req, res) => {
+  const studentEmail = req.cookies.username;
+  console.log("Student email cookie:", studentEmail);
+  const courseID = req.query.courseID || null;
+
+  let sql = `
+  SELECT s.StudentID, CONCAT(s.Fname, ' ', s.Lname) AS FullName, 
+         c.CourseID, c.CourseName, g.Grade, g.DateGraded
+  FROM student s
+  JOIN grade g ON s.StudentID = g.StudentID
+  JOIN course c ON g.CourseID = c.CourseID
+  WHERE s.Email = ?
+`;
+
+  const params = [studentEmail];
+
+  if (courseID) {
+    sql += " AND c.CourseID = ?";
+    params.push(courseID);
+  }
+  con.query(sql, params, (err, results) => {
+    if (err) {
+      console.error('Error fetching filtered grades:', err.message);
+      return res.status(500).send("Failed to fetch grades.");
+    }
+  
+    // Format DateGraded
+    const formatted = results.map(row => {
+      return {
+        ...row,
+        DateGraded: row.DateGraded
+        ? new Date(row.DateGraded + 'T00:00:00').toLocaleDateString('en-US')
+        : "N/A"
+      };
+    });
+  
+    res.json(formatted);
+  });
+});
+
 
 /*---------------------------------- GET PAYMENTS ----------------------------------*/
 app.get('/get-payments', (req, res) => {
@@ -377,6 +462,8 @@ app.post('/login', (request, response) => {
     }
 
     response.cookie("loggedIn", 1, { expire: Date.now() + 30 * 60 * 1000 }); // 30 min cookie THAT RECORDS WHEN YOU LOG IN
+    response.cookie("username", the_username, { expire: Date.now() + 30 * 60 * 1000 });
+
 // REDIRECTING  and giving cookie BASED ON ROLE change this please
     if (user.Role === 'student') {
       console.log(`1`);
