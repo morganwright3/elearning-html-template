@@ -424,6 +424,32 @@ app.post('/register', (req, res) => {
     }
   });
 });
+
+/*---------------------------------- Outstanding Balances ----------------------------------*/
+
+app.get('/admin/outstanding-balances', (req, res) => {
+  const sql = `
+    SELECT 
+      s.StudentID,
+      CONCAT(s.Fname, ' ', s.Lname) AS FullName,
+      10000 AS TotalTuition,
+      IFNULL(SUM(CASE WHEN p.Status = 'Paid' THEN p.Amount ELSE 0 END), 0) AS TotalPaid,
+      10000 - IFNULL(SUM(CASE WHEN p.Status = 'Paid' THEN p.Amount ELSE 0 END), 0) AS OutstandingBalance
+    FROM student s
+    LEFT JOIN payment p ON s.StudentID = p.StudentID
+    GROUP BY s.StudentID
+  `;
+
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching outstanding balances:', err.message);
+      return res.status(500).send('Failed to load tuition report.');
+    }
+    res.json(results);
+  });
+});
+
+
 /*---------------------------------- LOGIN/LOGOUT/REGISTER ----------------------------------*/
 
 app.post('/login', (request, response) => {

@@ -124,6 +124,8 @@ function navBar(mode = "index") {
                   <a href="adminblank.html" class="dropdown-item">Link Student-Parent Accounts</a>
                   <a href="adminblank.html" class="dropdown-item">Reset Passwords</a>
                   <a href="adminblank.html" class="dropdown-item">Assign Roles</a>
+                  <a href="outstandingBalance.html" class="dropdown-item">Outstanding Balances</a>
+
                 </div>
               </div>
 
