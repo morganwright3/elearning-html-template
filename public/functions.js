@@ -62,25 +62,10 @@ function navBar(mode = "index") {
               </div>
             ` : ``}
                         ${mode === "tportal" ? `
-              <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manages Attendance</a>
-                <div class="dropdown-menu fade-down m-0">
-                  <a href="manageAttendance.html" class="dropdown-item">World History - 001</a>
-                  <a href="teacherblank.html" class="dropdown-item">World History - 002</a>
-                  <a href="teacherblank.html" class="dropdown-item">AP US History - 004</a>
-                  <a href="teacherblank.html" class="dropdown-item">US History - 001</a>
-                </div>
-              </div>
+          <a href="manageAttendance.html" class="nav-item nav-link">Manage Attendance</a>
 
-                <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Grades</a>
-                <div class="dropdown-menu fade-down m-0">
-                 <a href="manageGrades.html" class="dropdown-item">World History - 001</a>
-                  <a href="manageGrades.html" class="dropdown-item">World History - 002</a>
-                  <a href="manageGrades.html" class="dropdown-item">AP US History - 004</a>
-                  <a href="manageGrades.html" class="dropdown-item">US History - 001</a>
-                </div>
-              </div>
+          <a href="manageGrades.html" class="nav-item nav-link">Manage Grades</a>
+
 
               <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Academic Reports</a>
@@ -133,7 +118,7 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Manage Academics</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="adminblank.html" class="dropdown-item">Upload/Edit Report Cards</a>
-                  <a href="adminblank.html" class="dropdown-item">Registerr Students For Classes</a>
+                  <a href="adminblank.html" class="dropdown-item">Register Students For Classes</a>
                   <a href="adminblank.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
                   <a href="trackTranscriptRequests.html" class="dropdown-item">Track Transcript Requests</a>
                   <a href="enrollmentReport.html" class="dropdown-item">Enrollment Report</a>
