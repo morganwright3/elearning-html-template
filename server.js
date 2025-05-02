@@ -318,13 +318,17 @@ app.get('/get-my-grades', (req, res) => {
   const courseID = req.query.courseID || null;
 
   let sql = `
-  SELECT s.StudentID, CONCAT(s.Fname, ' ', s.Lname) AS FullName, 
-         c.CourseID, c.CourseName, g.Grade, g.DateGraded
-  FROM student s
-  JOIN grade g ON s.StudentID = g.StudentID
-  JOIN course c ON g.CourseID = c.CourseID
-WHERE LOWER(s.Email) = LOWER(?)
-`;
+SELECT s.StudentID, CONCAT(s.Fname, ' ', s.Lname) AS FullName, 
+       c.CourseID, c.CourseName, g.Grade, g.DateGraded,
+       (SELECT ROUND(AVG(g2.Grade), 2)
+        FROM grade g2
+        WHERE g2.CourseID = g.CourseID
+        AND g2.StudentID = s.StudentID) AS CourseAvg
+    FROM student s
+    JOIN grade g ON s.StudentID = g.StudentID
+    JOIN course c ON g.CourseID = c.CourseID
+    WHERE LOWER(s.Email) = LOWER(?)
+  `;
 
   const params = [studentEmail];
 
@@ -332,26 +336,51 @@ WHERE LOWER(s.Email) = LOWER(?)
     sql += " AND c.CourseID = ?";
     params.push(courseID);
   }
+
+  // ✅ Now append ORDER BY after all WHERE conditions
+  sql += " ORDER BY g.DateGraded DESC";
+
   con.query(sql, params, (err, results) => {
     if (err) {
       console.error('Error fetching filtered grades:', err.message);
       return res.status(500).send("Failed to fetch grades.");
     }
-  
-    // Format DateGraded
-    const formatted = results.map(row => {
-      return {
-        ...row,
-        DateGraded: row.DateGraded
-        ? new Date(row.DateGraded + 'T00:00:00').toLocaleDateString('en-US')
+
+    const formatted = results.map(row => ({
+      ...row,
+      DateGraded: row.DateGraded
+        ? new Date(row.DateGraded).toISOString().split('T')[0]
         : "N/A"
-      };
-    });
-  
+    }));
+
     res.json(formatted);
   });
 });
 
+// NEW: Get per-course averages for a student (displayed above table)
+app.get('/get-my-avg-grades', (req, res) => {
+  const studentEmail = req.cookies.username;
+
+  const sql = `
+    SELECT 
+      c.CourseName,
+      ROUND(AVG(g.Grade), 2) AS CourseAvg
+    FROM student s
+    JOIN grade g ON s.StudentID = g.StudentID
+    JOIN course c ON g.CourseID = c.CourseID
+    WHERE LOWER(s.Email) = LOWER(?)
+    GROUP BY c.CourseName
+    ORDER BY c.CourseName
+  `;
+
+  con.query(sql, [studentEmail], (err, results) => {
+    if (err) {
+      console.error('Error fetching averages:', err.message);
+      return res.status(500).send('Failed to fetch course averages.');
+    }
+    res.json(results);
+  });
+});
 
 /*---------------------------------- GET PAYMENTS ----------------------------------*/
 app.get('/get-payments', (req, res) => {
@@ -486,7 +515,26 @@ app.post('/register', (req, res) => {
     if (err) throw err;
 
     if (result.affectedRows > 0) {
-      res.redirect('/successfulRegistration.html');
+// Find student ID using their email
+const studentQuery = `SELECT StudentID FROM student WHERE LOWER(Email) = LOWER(?)`;
+con.query(studentQuery, [email], (err2, studentResult) => {
+  if (err2 || studentResult.length === 0) {
+    console.error("Student not found.");
+    return res.status(400).send("Student not found.");
+  }
+
+  const studentID = studentResult[0].StudentID;
+
+  // Insert into enrollment
+  const enrollQuery = `INSERT INTO enrollment (StudentID, CourseID) VALUES (?, ?)`;
+  con.query(enrollQuery, [studentID, course_id], (err3) => {
+    if (err3) {
+      console.error("Error enrolling student:", err3.message);
+      return res.status(500).send("Failed to enroll student.");
+    }
+    res.redirect('/successfulRegistration.html');
+  });
+});
     } else {
       res.send('Sorry, no seats available for this class.');
     }

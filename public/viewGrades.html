@@ -27,6 +27,8 @@
 <body>
   <div class="container mt-5">
     <h2>My Grades</h2>
+    <div id="avgGradesContainer" class="mb-4"></div>
+
 
     <!-- Dropdown for filtering -->
     <label for="classFilter">Filter by Class:</label>
@@ -65,24 +67,27 @@
           }
 
           let html = `
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Course</th>
-                  <th>Grade</th>
-                </tr>
-              </thead>
-              <tbody>
-          `;
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Grade</th>
+        <th>Date Graded</th>
+      </tr>
+    </thead>
+    <tbody>
+`;
 
-          data.forEach(row => {
-            html += `
-              <tr>
-                <td>${row.CourseName}</td>
-                <td>${row.Grade}</td>
-              </tr>
-            `;
-          });
+data.forEach(row => {
+  html += `
+    <tr>
+      <td>${row.CourseName}</td>
+      <td>${row.Grade}</td>
+      <td>${row.DateGraded}</td>
+    </tr>
+  `;
+});
+
 
           html += "</tbody></table>";
           document.getElementById("gradesTableContainer").innerHTML = html;
@@ -97,7 +102,32 @@
     window.onload = function () {
       loadClassOptions();
       loadGrades();
+      loadCourseAverages();
     };
+
+    function loadCourseAverages() {
+  fetch('/get-my-avg-grades')
+    .then(res => res.json())
+    .then(data => {
+      if (data.length === 0) {
+        document.getElementById("avgGradesContainer").innerHTML = "<p>No course averages available.</p>";
+        return;
+      }
+
+      let html = "<h4>Your Course Averages</h4><ul>";
+      data.forEach(row => {
+        html += `<li>${row.CourseName}: ${row.CourseAvg}</li>`;
+      });
+      html += "</ul>";
+
+      document.getElementById("avgGradesContainer").innerHTML = html;
+    })
+    .catch(err => {
+      console.error("Error loading course averages:", err);
+      document.getElementById("avgGradesContainer").innerHTML = "<p>Failed to load course averages.</p>";
+    });
+}
+
   </script>
 </body>
 </html>
