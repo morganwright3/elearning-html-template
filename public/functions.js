@@ -24,6 +24,7 @@ function navBar(mode = "index") {
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Student Services</a>
                 <div class="dropdown-menu fade-down m-0">
                   <a href="team.html" class="dropdown-item">Register For Class</a>
+                  <a href="studentExtracurricular.html" class="dropdown-item">Register For Extracurriculars</a>
                   <a href="viewGrades.html" class="dropdown-item">View Grades</a>
                   <a href="viewAttendance.html" class="dropdown-item">View Attendance</a>
                   <a href="downloadReportCard.html" class="dropdown-item">Download Report Card</a>
@@ -119,6 +120,7 @@ function navBar(mode = "index") {
                 <div class="dropdown-menu fade-down m-0">
                   <a href="adminblank.html" class="dropdown-item">Upload/Edit Report Cards</a>
                   <a href="adminblank.html" class="dropdown-item">Register Students For Classes</a>
+                  <a href="adminExtracurricular.html" class="dropdown-item">Manage Student Extracurriculars</a>
                   <a href="adminblank.html" class="dropdown-item">Update Attendance, Grades, Fees</a>
                   <a href="trackTranscriptRequests.html" class="dropdown-item">Track Transcript Requests</a>
                   <a href="enrollmentReport.html" class="dropdown-item">Enrollment Report</a>

@@ -60,6 +60,75 @@ app.get('/get-classes', (req, res) => {
   });
 });
 
+//admin extracurricular
+app.get('/admin-activities', (req, res) => {
+  con.query('SELECT * FROM extracurricular', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+app.post('/update-activity-seats', (req, res) => {
+  const { ActivityID, AvailableSeats } = req.body;
+  con.query('UPDATE extracurricular SET AvailableSeats = ? WHERE ActivityID = ?', [AvailableSeats, ActivityID], (err) => {
+    if (err) throw err;
+    res.redirect('/adminExtracurricular.html');
+  });
+});
+
+// Get activities
+app.get('/get-activities', (req, res) => {
+  con.query('SELECT * FROM extracurricular WHERE AvailableSeats > 0', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+app.post('/signup-activity', (req, res) => {
+  const studentID = req.session.user?.StudentID;
+  const activityID = req.body.activity;
+
+  if (!studentID || !activityID) {
+    return res.status(400).send('Missing student or activity ID');
+  }
+
+  con.beginTransaction(err => {
+    if (err) throw err;
+
+    // Step 1: Check available seats
+    con.query('SELECT AvailableSeats FROM extracurricular WHERE ActivityID = ?', [activityID], (err, results) => {
+      if (err || results.length === 0 || results[0].AvailableSeats <= 0) {
+        return con.rollback(() => {
+          console.log("No seats available or activity not found.");
+          res.redirect('/activityFull.html'); // 🔁 create this HTML page if needed
+        });
+      }
+
+      // Step 2: Register the student
+      con.query('INSERT INTO student_extracurricular SET ?', { StudentID: studentID, ActivityID: activityID }, (err) => {
+        if (err) return con.rollback(() => {
+          console.log("Duplicate entry or other error.");
+          res.redirect('/alreadySignedUp.html'); // 🔁 create this HTML page if needed
+        });
+
+        // Step 3: Update seats
+        con.query('UPDATE extracurricular SET AvailableSeats = AvailableSeats - 1 WHERE ActivityID = ?', [activityID], (err) => {
+          if (err) return con.rollback(() => res.send('Error updating seats'));
+
+          con.commit(err => {
+            if (err) return con.rollback(() => res.send('Commit failed'));
+
+            console.log("Signup successful.");
+            res.redirect('/successfulActivitySignup.html'); // ✅ Final success page
+          });
+        });
+      });
+    });
+  });
+});
+
+
+
 /*---------------------------------- GET Transcripts ----------------------------------*/
 app.post('/submit-transcript-request', (req, res) => {
   const { studentID, deliveryMethod, notes } = req.body;
@@ -565,6 +634,27 @@ app.get('/admin/outstanding-balances', (req, res) => {
   });
 });
 
+app.get('/admin/student-activities', (req, res) => {
+  const sql = `
+    SELECT 
+      s.StudentID,
+      CONCAT(s.Fname, ' ', s.Lname) AS StudentName,
+      e.Name AS ActivityName,
+      e.ActivityID
+    FROM student_extracurricular se
+    JOIN student s ON se.StudentID = s.StudentID
+    JOIN extracurricular e ON se.ActivityID = e.ActivityID
+    ORDER BY e.Name, s.Lname;
+  `;
+
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching student activities:', err.message);
+      return res.status(500).send('Error loading student activity list.');
+    }
+    res.json(results);
+  });
+});
 
 /*---------------------------------- LOGIN/LOGOUT/REGISTER ----------------------------------*/
 
@@ -604,9 +694,20 @@ app.post('/login', (request, response) => {
 
     // Set role cookie and redirect
     if (user.Role === 'student') {
-      response.cookie("role", 1, { maxAge: 1800000 });
-      return response.redirect('/studentPortal.html');
-    } else if (user.Role === 'teacher') {
+      // 🔍 Find full student record
+      const getStudent = `SELECT * FROM student WHERE Email = ?`;
+      con.query(getStudent, [user.Email], (err2, studentResult) => {
+        if (err2 || studentResult.length === 0) {
+          console.error('Error finding student for session:', err2);
+          return response.status(500).send("Failed to find student.");
+        }
+    
+        request.session.user = studentResult[0]; // ✅ Corrected: use 'request'
+        response.cookie("role", 1, { maxAge: 1800000 });
+        return response.redirect('/studentPortal.html');
+      });
+    }
+     else if (user.Role === 'teacher') {
       response.cookie("role", 2, { maxAge: 1800000 });
       return response.redirect('/teacherPortal.html');
     } else if (user.Role === 'principal') {
