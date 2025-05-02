@@ -115,7 +115,9 @@
         }
 
         const table = document.createElement("table");
+table.className = "table table-bordered table-striped";
         table.innerHTML = `
+          <thead class="table-dark text-white">
           <tr>
             <th>Date</th>
             <th>Amount</th>
@@ -123,6 +125,8 @@
             <th>Status</th>
             <th>Fee Type</th>
           </tr>
+            </thead>
+  <tbody></tbody>
         `;
 
         payments.forEach(p => {
@@ -134,7 +138,7 @@
             <td>${p.Status}</td>
 <td>${p.FeeType ? p.FeeType : "Tuition"}</td>
           `;
-          table.appendChild(row);
+          table.querySelector("tbody").appendChild(row);
         });
 
         tableDiv.appendChild(table);

@@ -87,7 +87,7 @@
             const res = await fetch('/admin/get-transcript-requests');
             const data = await res.json();
 
-            let output = '<table class="table table-bordered"><thead><tr><th>Request ID</th><th>Student ID</th><th>Student Name</th><th>Request Date</th><th>Delivery Method</th><th>Status</th></tr></thead><tbody>';
+            let output = '<table class="table table-bordered"><thead class="table-dark text-white"><tr><th>Request ID</th><th>Student ID</th><th>Student Name</th><th>Request Date</th><th>Delivery Method</th><th>Status</th></tr></thead><tbody>';
 
             data.forEach(req => {
                 output += `<tr>
