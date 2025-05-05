@@ -251,19 +251,10 @@ app.get('/get-student-attendance', (req, res) => {
   const studentId = req.query.student_id;
 
   const sql = `
-    SELECT 
-      a.StudentID,
-      s.Fname,
-      s.Lname,
-      c.CourseName,
-      a.Date,
-      a.Status
-    FROM attendance a
-    JOIN student s ON a.StudentID = s.StudentID
-    JOIN course c ON a.CourseID = c.CourseID
-    WHERE a.StudentID = ?
-    ORDER BY a.Date DESC
-  `;
+  SELECT * FROM student_attendance_view
+  WHERE StudentID = ?
+  ORDER BY Date DESC
+`;
 
   con.query(sql, [studentId], (err, results) => {
     if (err) {
