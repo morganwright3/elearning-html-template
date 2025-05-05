@@ -280,10 +280,12 @@ app.get('/get-courses', (req, res) => {
 app.get('/get-students-in-course', (req, res) => {
   const courseID = req.query.course_id;
   const sql = `
-    SELECT s.StudentID, s.Fname, s.Lname
-    FROM student s
-    JOIN enrollment e ON s.StudentID = e.StudentID
-    WHERE e.CourseID = ?
+SELECT StudentID, Fname, Lname
+FROM student
+WHERE StudentID IN (
+  SELECT StudentID FROM enrollment WHERE CourseID = ?
+);
+
   `;
   con.query(sql, [courseID], (err, results) => {
     if (err) throw err;
@@ -1168,3 +1170,4 @@ app.all('*', function (request, response, next) {// This must be at the end!
 });
 
 app.listen(8080, () => console.log(`listening on port 8080`));
+                                                                        
