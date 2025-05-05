@@ -14,51 +14,54 @@
 
 <body>
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
     </div>
     <!-- Spinner End -->
-     
-<!---------------------------- Navigation Bar Start ---------------------------->
-<script>navBar();</script>
-<!----------------------------- Navigation Bar End ----------------------------->
+
+    <!---------------------------- Navigation Bar Start ---------------------------->
+    <script>navBar();</script>
+    <!----------------------------- Navigation Bar End ----------------------------->
 
 
-<!-- Login Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="bg-light p-5 rounded">
-                    <h1 class="text-center mb-4">Login</h1>
-                    <form action="/login" method="POST">
-                        <div class="form-group mb-3">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" name="username" required placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password" required>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary py-2">Login</button>
-                        </div>
-                    </form>
+    <!-- Login Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-light p-5 rounded">
+                        <h1 class="text-center mb-4">Login</h1>
+                        <form action="/login" method="POST">
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="email" name="username" required
+                                    placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required
+                                    placeholder="Enter your password" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary py-2">Login</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Login End -->
+    <!-- Login End -->
 
 
-        
 
-<!---------------------------- Footer Start ---------------------------->    
-<script>footer()</script>
-<!----------------------------- Footer End -----------------------------> 
+
+    <!---------------------------- Footer Start ---------------------------->
+    <script>footer()</script>
+    <!----------------------------- Footer End ----------------------------->
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

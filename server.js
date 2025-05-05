@@ -10,7 +10,7 @@ var mysql = require('mysql');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
-app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
+app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 app.use(express.static('./public'));
 app.use(myParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -29,20 +29,20 @@ app.use((req, res, next) => {
 });
 
 // monitor all requests and make a reservation
-app.all('*', function (request, response, next){// this function also makes reservations
+app.all('*', function (request, response, next) {// this function also makes reservations
   console.log(request.method + ' to ' + request.path);
   next();
 });
 
 /*---------------------------------- DATABASE CONNECTION ----------------------------------*/
-console.log("Connecting to localhost..."); 
+console.log("Connecting to localhost...");
 var con = mysql.createConnection({// Actual DB connection occurs here
   host: '10.211.55.3',
   user: "root",
   port: 3306,
-  database: "maryknoll", 
+  database: "maryknoll",
   password: ""
-}); 
+});
 
 con.connect(function (err) {
   if (err) {
@@ -198,39 +198,39 @@ app.get('/get-transcript-requests', (req, res) => {
 
   const findStudentQuery = `SELECT StudentID, Fname AS FirstName, Lname AS LastName FROM Student WHERE StudentID = ?`;
   con.query(findStudentQuery, [studentID], (err, results) => {
-      if (err || results.length === 0) {
-          console.error('Error finding student:', err);
-          return res.json([]);
-      }
+    if (err || results.length === 0) {
+      console.error('Error finding student:', err);
+      return res.json([]);
+    }
 
-      const student = results[0];
-      const alumniID = student.StudentID;
-      const requestQuery = `
+    const student = results[0];
+    const alumniID = student.StudentID;
+    const requestQuery = `
           SELECT RequestDate, DeliveryMethod, Status
           FROM TranscriptRequest
           WHERE AlumniID = ?
           ORDER BY RequestDate DESC
       `;
 
-      con.query(requestQuery, [alumniID], (err2, requestResults) => {
-          if (err2) {
-              console.error('Error fetching transcript requests:', err2);
-              return res.json([]);
-          }
+    con.query(requestQuery, [alumniID], (err2, requestResults) => {
+      if (err2) {
+        console.error('Error fetching transcript requests:', err2);
+        return res.json([]);
+      }
 
-          // Format the dates and include student name
-          const formattedRequests = requestResults.map(request => {
-              const formattedDate = new Date(request.RequestDate).toLocaleDateString();
-              return {
-                  ...request,
-                  RequestDate: formattedDate,
-                  StudentID: student.StudentID,
-                  StudentName: `${student.FirstName} ${student.LastName}`,
-              };
-          });
-
-          res.json(formattedRequests);
+      // Format the dates and include student name
+      const formattedRequests = requestResults.map(request => {
+        const formattedDate = new Date(request.RequestDate).toLocaleDateString();
+        return {
+          ...request,
+          RequestDate: formattedDate,
+          StudentID: student.StudentID,
+          StudentName: `${student.FirstName} ${student.LastName}`,
+        };
       });
+
+      res.json(formattedRequests);
+    });
   });
 });
 
@@ -563,26 +563,26 @@ app.post('/register', (req, res) => {
     if (err) throw err;
 
     if (result.affectedRows > 0) {
-// Find student ID using their email
-const studentQuery = `SELECT StudentID FROM student WHERE LOWER(Email) = LOWER(?)`;
-con.query(studentQuery, [email], (err2, studentResult) => {
-  if (err2 || studentResult.length === 0) {
-    console.error("Student not found.");
-    return res.status(400).send("Student not found.");
-  }
+      // Find student ID using their email
+      const studentQuery = `SELECT StudentID FROM student WHERE LOWER(Email) = LOWER(?)`;
+      con.query(studentQuery, [email], (err2, studentResult) => {
+        if (err2 || studentResult.length === 0) {
+          console.error("Student not found.");
+          return res.status(400).send("Student not found.");
+        }
 
-  const studentID = studentResult[0].StudentID;
+        const studentID = studentResult[0].StudentID;
 
-  // Insert into enrollment
-  const enrollQuery = `INSERT INTO enrollment (StudentID, CourseID) VALUES (?, ?)`;
-  con.query(enrollQuery, [studentID, course_id], (err3) => {
-    if (err3) {
-      console.error("Error enrolling student:", err3.message);
-      return res.status(500).send("Failed to enroll student.");
-    }
-    res.redirect('/successfulRegistration.html');
-  });
-});
+        // Insert into enrollment
+        const enrollQuery = `INSERT INTO enrollment (StudentID, CourseID) VALUES (?, ?)`;
+        con.query(enrollQuery, [studentID, course_id], (err3) => {
+          if (err3) {
+            console.error("Error enrolling student:", err3.message);
+            return res.status(500).send("Failed to enroll student.");
+          }
+          res.redirect('/successfulRegistration.html');
+        });
+      });
     } else {
       res.send('Sorry, no seats available for this class.');
     }
@@ -660,13 +660,13 @@ app.post('/login', (request, response) => {
           console.error('Error finding student for session:', err2);
           return response.status(500).send("Failed to find student.");
         }
-    
+
         request.session.user = studentResult[0]; // ✅ Corrected: use 'request'
         response.cookie("role", 1, { maxAge: 1800000 });
         return response.redirect('/studentPortal.html');
       });
     }
-     else if (user.Role === 'teacher') {
+    else if (user.Role === 'teacher') {
       response.cookie("role", 2, { maxAge: 1800000 });
       return response.redirect('/teacherPortal.html');
     } else if (user.Role === 'principal') {
@@ -678,7 +678,7 @@ app.post('/login', (request, response) => {
 
 
 
-app.post('/register', function (request, response) { 
+app.post('/register', function (request, response) {
   let the_username = request.body.username.toLowerCase(); // Account_Email
   let the_password = request.body.password;              // Account_Password
   let lname = request.body.lastname;                     // Last name
@@ -703,7 +703,7 @@ app.post('/register', function (request, response) {
   // Insert into the `account` table
   con.query(queryAccount, [the_username, the_password], (err) => {
     if (err) {
-      console.error('Database error in account table:', err); 
+      console.error('Database error in account table:', err);
       return response.status(500).send('Error creating account.');
     }
 
@@ -742,7 +742,7 @@ app.get("/searchRooms", (req, res) => {
   const persons = request.body.persons;
 
   if (!search) {
-      return res.status(400).send("Search term is required.");
+    return res.status(400).send("Search term is required.");
   }
 
   const query = `
@@ -753,32 +753,32 @@ app.get("/searchRooms", (req, res) => {
   `;
 
   con.query(query, (err, result) => {
-      if (err) throw err;
-      // Store results in session
-      req.session.results = result;
-      req.session.search = search;
-      req.session.what = 'geo';
-      // Redirect to geo.html with the query parameters
-      res.redirect(`/results.html?search=${encodeURIComponent(search)}&page=${page}`);
+    if (err) throw err;
+    // Store results in session
+    req.session.results = result;
+    req.session.search = search;
+    req.session.what = 'geo';
+    // Redirect to geo.html with the query parameters
+    res.redirect(`/results.html?search=${encodeURIComponent(search)}&page=${page}`);
   });
 });
 
 app.get("/get-session-data", (req, res) => {
   if (!req.session.results || !req.session.search) {
-      return res.status(404).json({ error: "No session data available." });
+    return res.status(404).json({ error: "No session data available." });
   }
   res.json({
-      results: req.session.results, 
-      search: req.session.search
+    results: req.session.results,
+    search: req.session.search
   });
   console.log(req.session);
 });
 
 app.get('/get-session-details', (req, res) => {
   if (req.session.Account_ID) {
-      res.json({ Account_ID: req.session.Account_ID, Account_Name: req.session.Account_Name });
+    res.json({ Account_ID: req.session.Account_ID, Account_Name: req.session.Account_Name });
   } else {
-      res.status(401).json({ error: "Account number not found in session." });
+    res.status(401).json({ error: "Account number not found in session." });
   }
 });
 
@@ -1049,19 +1049,19 @@ app.get("/api/run-query", (req, res) => {
 
   // Basic validation to prevent dangerous queries
   if (!sqlQuery || sqlQuery.toLowerCase().includes("drop") || sqlQuery.toLowerCase().includes("delete")) {
-      return res.status(400).json({ error: "Unsafe SQL query detected!" });
+    return res.status(400).json({ error: "Unsafe SQL query detected!" });
   }
 
   con.query(sqlQuery, (err, results) => {
-      if (err) {
-          console.error("SQL Query Error:", err);
-          return res.status(500).json({ error: err.message });
-      }
+    if (err) {
+      console.error("SQL Query Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
 
-      res.json(results);
+    res.json(results);
   });
 });
- 
+
 
 /*----------------------------------- STAFF VIEW -----------------------------------*/
 
@@ -1109,7 +1109,7 @@ app.post('/modifyRecords', (req, res) => {
     con.query(
       query,
       [
-        Record_ID, Author_ID, Publisher_ID, Department_ID, ISBN, Location, Rights, 
+        Record_ID, Author_ID, Publisher_ID, Department_ID, ISBN, Location, Rights,
         Title, Description, Language, Geo_Location, Date, Metadata, Medium, Subject
       ],
       (err) => {

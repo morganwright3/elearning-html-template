@@ -14,7 +14,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -33,7 +35,8 @@
 
 <body>
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -42,9 +45,9 @@
 
 
     <!---------------------------- Navigation Bar Start ---------------------------->
-<script src="./functions.js"></script>
-<script>navBar("sportal");</script>
-<!----------------------------- Navigation Bar End ----------------------------->
+    <script src="./functions.js"></script>
+    <script>navBar("sportal");</script>
+    <!----------------------------- Navigation Bar End ----------------------------->
 
 
     <!-- Header Start -->
@@ -54,12 +57,13 @@
                 <div class="col-lg-10 text-center">
                     <h1 class="display-3 text-white animated slideInDown">Class Registration</h1>
                     <nav aria-label="breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">Register for Classes</li>
-                        </ol>
-                    </nav>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Register for Classes
+                                </li>
+                            </ol>
+                        </nav>
                 </div>
             </div>
         </div>
@@ -110,11 +114,11 @@
         </div>
     </div>
     <!-- Registration Form End -->
-        
 
-     <!---------------------------- Footer Start ---------------------------->    
-<script>footer()</script>
-<!----------------------------- Footer End -----------------------------> 
+
+    <!---------------------------- Footer Start ---------------------------->
+    <script>footer()</script>
+    <!----------------------------- Footer End ----------------------------->
 
 
     <!-- Back to Top -->
@@ -131,34 +135,34 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    
+
     <script>
-        window.onload = function() {
-          fetch('/get-classes')
-            .then(response => response.json())
-            .then(data => {
-              let classSelect = document.getElementById('class');
-              classSelect.innerHTML = '<option value="">Select a Class</option>';
-              data.forEach(course => {
-                if (course.AvailableSeats > 0) { // only show classes with available seats
-                  classSelect.innerHTML += `
+        window.onload = function () {
+            fetch('/get-classes')
+                .then(response => response.json())
+                .then(data => {
+                    let classSelect = document.getElementById('class');
+                    classSelect.innerHTML = '<option value="">Select a Class</option>';
+                    data.forEach(course => {
+                        if (course.AvailableSeats > 0) { // only show classes with available seats
+                            classSelect.innerHTML += `
                     <option value="${course.CourseID}">
                       ${course.CourseName} (${course.AvailableSeats} seats left)
                     </option>
                   `;
-                } else {
-                  classSelect.innerHTML += `
+                        } else {
+                            classSelect.innerHTML += `
                     <option value="${course.CourseID}" disabled>
                       ${course.CourseName} (FULL)
                     </option>
                   `;
-                }
-              });
-            })
-            .catch(error => console.error('Error loading classes:', error));
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading classes:', error));
         }
-      </script>
-      
+    </script>
+
 </body>
 
 </html>

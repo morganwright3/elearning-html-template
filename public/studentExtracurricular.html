@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Join an Extracurricular Activity</title>
@@ -12,7 +13,9 @@
   <link href="img/favicon.ico" rel="icon">
 
   <!-- Google Fonts + Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -28,45 +31,46 @@
 
 
 
-  <!-- Page Header -->
-  <div class="container-fluid bg-primary py-5 mb-5 page-header">
-    <div class="container py-5">
-      <div class="row justify-content-center">
-        <div class="col-lg-10 text-center">
-          <h1 class="display-3 text-white animated slideInDown">Join an Extracurricular Activity</h1>
-        </div>
+<!-- Page Header -->
+<div class="container-fluid bg-primary py-5 mb-5 page-header">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 text-center">
+        <h1 class="display-3 text-white animated slideInDown">Join an Extracurricular Activity</h1>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Content -->
-  <div class="container mt-5">
-    <div class="card shadow rounded-4 p-4">
-      <h4 class="mb-3">Choose an Activity</h4>
-      <form action="/signup-activity" method="POST">
-        <div class="mb-3">
-          <label for="activitySelect" class="form-label">Select Activity:</label>
-          <select class="form-select" name="activity" id="activitySelect" required></select>
-        </div>
-        <button type="submit" class="btn btn-primary">Join</button>
-      </form>
-    </div>
+<!-- Content -->
+<div class="container mt-5">
+  <div class="card shadow rounded-4 p-4">
+    <h4 class="mb-3">Choose an Activity</h4>
+    <form action="/signup-activity" method="POST">
+      <div class="mb-3">
+        <label for="activitySelect" class="form-label">Select Activity:</label>
+        <select class="form-select" name="activity" id="activitySelect" required></select>
+      </div>
+      <button type="submit" class="btn btn-primary">Join</button>
+    </form>
   </div>
+</div>
 
-  <!-- Script to Load Activities -->
-  <script>
-    fetch('/get-activities')
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById('activitySelect');
-        data.forEach(act => {
-          const option = document.createElement('option');
-          option.value = act.ActivityID;
-          option.text = `${act.Name} (${act.AvailableSeats} seats left)`;
-          select.appendChild(option);
-        });
+<!-- Script to Load Activities -->
+<script>
+  fetch('/get-activities')
+    .then(res => res.json())
+    .then(data => {
+      const select = document.getElementById('activitySelect');
+      data.forEach(act => {
+        const option = document.createElement('option');
+        option.value = act.ActivityID;
+        option.text = `${act.Name} (${act.AvailableSeats} seats left)`;
+        select.appendChild(option);
       });
-  </script>
+    });
+</script>
 
 </body>
+
 </html>

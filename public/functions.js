@@ -5,9 +5,9 @@
 /*---------------------------------- GENERAL FUNCTIONS USED EVERWHERE ----------------------------------*/
 
 function navBar(mode = "index") {
-    let isloggedin = getCookie("loggedIn");
+  let isloggedin = getCookie("loggedIn");
 
-    document.write(`
+  document.write(`
       <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
            <h2 class="-bs-primary"><img src="./img/Maryknoll_Logo.png" height="50px">myMaryknoll</h2>
@@ -161,8 +161,8 @@ function navBar(mode = "index") {
 }
 
 
-function styleStuff(){ //contains favicon and css information
-    document.write(`
+function styleStuff() { //contains favicon and css information
+  document.write(`
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -188,7 +188,7 @@ function styleStuff(){ //contains favicon and css information
 }
 
 function footer() {
-    document.write(`        
+  document.write(`        
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
@@ -208,12 +208,12 @@ function footer() {
 
 
 function getCurrentDate() { // Function to get the current date in the format YYYY-MM-DD
-    // Function from ChatGPT using the "make me a function that gets todays date using javascript" prompt
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  // Function from ChatGPT using the "make me a function that gets todays date using javascript" prompt
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function logout() { // deletes the logged in cookie and reloads the page
@@ -223,7 +223,7 @@ function logout() { // deletes the logged in cookie and reloads the page
   document.cookie = "loggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   document.cookie = "librarianC=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   document.cookie = "totalIC=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  document.cookie =  "address=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.cookie = "address=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   // Reload the current page
   location.reload();
 }
@@ -233,44 +233,44 @@ function loadJSON(service, callback) { // This function asks the server for a "s
   xobj.overrideMimeType("application/json");
   xobj.open('POST', service, false);
   xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-          // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-          callback(xobj.responseText);
-        }
+    if (xobj.readyState == 4 && xobj.status == "200") {
+      // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+      callback(xobj.responseText);
+    }
   };
-  xobj.send(null);  
+  xobj.send(null);
 }
 
 function reloadPageFor1Seconds() {
   let seconds = 0;
   const reloadInterval = setInterval(function () {
-      if (seconds < 1) {
-          location.reload();
-          seconds++;
-      } else {
-          clearInterval(reloadInterval);
-      }
+    if (seconds < 1) {
+      location.reload();
+      seconds++;
+    } else {
+      clearInterval(reloadInterval);
+    }
   }, 1000); // 1000 milliseconds = 1 second
 }
 
 /*------------------------- INVOICE AND SHOPPING CART PAGE SPECIFIC FUNCTIONS --------------------------*/
 
-function updateQuantity(location, productIndex){
+function updateQuantity(location, productIndex) {
   // get the shopping cart data for this user
   loadJSON(`update_cart?location=${location}&productIndex=${productIndex}&value=${document.getElementById(`quantityTextbox${location}_${productIndex}`).value}`, function (response) {
-  // Parsing JSON string into object
-  shopping_cart = JSON.parse(response);
-  reloadPageFor1Seconds();
-});
+    // Parsing JSON string into object
+    shopping_cart = JSON.parse(response);
+    reloadPageFor1Seconds();
+  });
 }
 
-function updateFav(location, productIndex){
+function updateFav(location, productIndex) {
   console.log(location, productIndex, document.getElementById(`checkbox${location}_${productIndex}`).value);
   // get the shopping cart data for this user
   loadJSON(`update_fav?location=${location}&productIndex=${productIndex}&value=${document.getElementById(`checkbox${location}_${productIndex}`).value}`, function (response) {
-  // Parsing JSON string into object
-  shopping_cart = JSON.parse(response);
-});
+    // Parsing JSON string into object
+    shopping_cart = JSON.parse(response);
+  });
 }
 
 /*----------------------------------------- COOKIE FUNCTIONs -------------------------------------------*/
@@ -282,24 +282,24 @@ function setCookie(name, value, minutesToExpire) {// Function to set a cookie wi
   document.cookie = cookieString;
 }
 
-function getCookie(name){// Function to get the value of a cookie by name
-    let cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.indexOf(name + "=") === 0) {
-            return decodeURIComponent(cookie.substring(name.length + 1));
-        }
+function getCookie(name) {// Function to get the value of a cookie by name
+  let cookies = document.cookie.split(';');
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.indexOf(name + "=") === 0) {
+      return decodeURIComponent(cookie.substring(name.length + 1));
     }
-    return null;
+  }
+  return null;
 }
 
 function checkCookie(cookieName) {// Function to check if a cookie exists
   var cookies = document.cookie.split(';');
   for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      if (cookie.indexOf(cookieName + "=") === 0) {
-          return true; // Cookie found
-      }
+    var cookie = cookies[i].trim();
+    if (cookie.indexOf(cookieName + "=") === 0) {
+      return true; // Cookie found
+    }
   }
   return false; // Cookie not found
 }

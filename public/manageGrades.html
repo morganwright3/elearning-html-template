@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Manage Grades</title>
@@ -7,23 +8,23 @@
   <script>navBar("tportal");</script>
   <script>styleStuff();</script>
 </head>
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header">
-      <div class="container py-5">
-          <div class="row justify-content-center">
-              <div class="col-lg-10 text-center">
-                  <h1 class="display-3 text-white animated slideInDown">Manage Student Grades</h1>
-                  <nav aria-label="breadcrumb">
-                      <ol class="breadcrumb justify-content-center">
-                          <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-                          <li class="breadcrumb-item text-white active" aria-current="page">Manage Grades</li>
-                      </ol>
-                  </nav>
-              </div>
-          </div>
+<!-- Header Start -->
+<div class="container-fluid bg-primary py-5 mb-5 page-header">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 text-center">
+        <h1 class="display-3 text-white animated slideInDown">Manage Student Grades</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center">
+            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+            <li class="breadcrumb-item text-white active" aria-current="page">Manage Grades</li>
+          </ol>
+        </nav>
       </div>
+    </div>
   </div>
-  <!-- Header End -->
+</div>
+<!-- Header End -->
 
 <body>
   <div class="container mt-5">
@@ -50,7 +51,7 @@
         document.getElementById("gradeTableContainer").innerHTML = "";
         return;
       }
-    
+
       fetch(`/get-students-and-grades?classID=${classID}`)
         .then(res => res.json())
         .then(data => {
@@ -58,7 +59,7 @@
             document.getElementById("gradeTableContainer").innerHTML = "<p>No students found.</p>";
             return;
           }
-    
+
           // Start the table with a placeholder for the average
           let tableHTML = `
             <p><strong>Class Average:</strong> <span id="classAverage">Calculating...</span></p>
@@ -75,21 +76,21 @@
               </thead>
               <tbody>
           `;
-    
+
           // Variables to calculate average
           let total = 0;
           let count = 0;
-    
+
           data.forEach(student => {
             const grade = parseFloat(student.Grade);
             const displayGrade = isNaN(grade) ? "Not Yet Graded" : grade.toFixed(2);
-    
+
             // Average math
             if (!isNaN(grade)) {
               total += grade;
               count++;
             }
-    
+
             // Build each row
             tableHTML += `
               <tr>
@@ -106,10 +107,10 @@
               </tr>
             `;
           });
-    
+
           tableHTML += "</tbody></table>";
           document.getElementById("gradeTableContainer").innerHTML = tableHTML;
-    
+
           // Set the class average
           const avg = count > 0 ? (total / count).toFixed(2) : "N/A";
           document.getElementById("classAverage").innerText = avg;
@@ -119,39 +120,40 @@
           document.getElementById("gradeTableContainer").innerHTML = "<p>Error loading students.</p>";
         });
     }
-    </script>
-    <script>
-        function updateGrade(studentID, classID) {
-          const input = document.getElementById(`gradeInput-${studentID}`);
-          const newGrade = input.value.trim();
-        
-          if (!newGrade || isNaN(newGrade)) {
-            alert("Please enter a valid number for the grade.");
-            return;
+  </script>
+  <script>
+    function updateGrade(studentID, classID) {
+      const input = document.getElementById(`gradeInput-${studentID}`);
+      const newGrade = input.value.trim();
+
+      if (!newGrade || isNaN(newGrade)) {
+        alert("Please enter a valid number for the grade.");
+        return;
+      }
+
+      fetch('/update-grade', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ StudentID: studentID, ClassID: classID, Grade: newGrade })
+      })
+        .then(res => res.json())
+        .then(result => {
+          if (result.success) {
+            loadStudentsForClass(); // reloads entire table including recalculated average
+          } else {
+            alert("Failed to update grade.");
           }
-        
-          fetch('/update-grade', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ StudentID: studentID, ClassID: classID, Grade: newGrade })
-          })
-          .then(res => res.json())
-          .then(result => {
-            if (result.success) {
-              loadStudentsForClass(); // reloads entire table including recalculated average
-            } else {
-              alert("Failed to update grade.");
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            alert("Server error while updating grade.");
-          });
-        }
-        </script>
-        
-          <!-- Footer Start -->
-          <script>footer();</script>
-          <!-- Footer End -->
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Server error while updating grade.");
+        });
+    }
+  </script>
+
+  <!-- Footer Start -->
+  <script>footer();</script>
+  <!-- Footer End -->
 </body>
+
 </html>
