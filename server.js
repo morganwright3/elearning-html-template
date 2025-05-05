@@ -420,7 +420,7 @@ app.get('/get-my-avg-grades', (req, res) => {
   const studentEmail = req.cookies.username;
 
 
-  
+
   const sql = `
     SELECT * 
     FROM student_course_averages_view 
@@ -1061,6 +1061,7 @@ app.get("/api/run-query", (req, res) => {
       res.json(results);
   });
 });
+ 
 
 /*----------------------------------- STAFF VIEW -----------------------------------*/
 
