@@ -1,4 +1,4 @@
-/* Incorporated into the design from W3schools: W3.CSS 4.15 December 2020 by Jan Egil and Borge Refsnes */
+/*---------- Created by Morgan Wright, Kyson Calibuso, Orli Tagoviloa, Ian Bowers, Kody Rafael, and Macie Tsang ----------*/
 /*-------------------------------------- UHM ITM354 Final Project --------------------------------------*/
 
 
