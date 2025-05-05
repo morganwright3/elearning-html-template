@@ -1170,4 +1170,3 @@ app.all('*', function (request, response, next) {// This must be at the end!
 });
 
 app.listen(8080, () => console.log(`listening on port 8080`));
-                                                                        
