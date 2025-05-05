@@ -1,6 +1,8 @@
 /*---------- Created by Morgan Wright, Kyson Calibuso, Orli Tagoviloa, Ian Bowers, Kody Rafael, and Macie Tsang ----------*/
 /*-------------------------------------- UHM ITM354 Final Project --------------------------------------*/
 
+
+
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
@@ -42,9 +44,12 @@ var con = mysql.createConnection({// Actual DB connection occurs here
   password: ""
 }); 
 
-con.connect(function (err) {// Throws error or confirms connection
-  if (err) throw err;
- console.log("Connected!");
+con.connect(function (err) {
+  if (err) {
+    console.error("Failed to connect to MySQL:", err.message);
+    process.exit(1); // Gracefully exit
+  }
+  console.log("Connected to MySQL");
 });
 
 
@@ -230,30 +235,16 @@ app.get('/get-transcript-requests', (req, res) => {
 });
 
 app.get('/admin/get-transcript-requests', (req, res) => {
-  const query = `
-      SELECT 
-          tr.RequestID,
-          a.StudentID,
-          CONCAT(s.Fname, ' ', s.Lname) AS StudentName,
-          tr.RequestDate,
-          tr.DeliveryMethod,
-          tr.Status
-      FROM TranscriptRequest tr
-      JOIN Alumni a ON tr.AlumniID = a.AlumniID
-      JOIN Student s ON a.StudentID = s.StudentID
-ORDER BY tr.RequestID DESC
-  `;
+  const sql = `SELECT * FROM admin_transcript_requests_view`;
 
-  con.query(query, (err, results) => {
-      if (err) {
-          console.error('Error fetching admin transcript requests:', err);
-          return res.status(500).send('Failed to fetch transcript requests.');
-      }
-      res.json(results);
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching admin transcript requests:', err);
+      return res.status(500).send('Failed to fetch transcript requests.');
+    }
+    res.json(results);
   });
 });
-
-
 
 
 /*---------------------------------- GET ATTENDANCE ----------------------------------*/
@@ -428,16 +419,15 @@ SELECT s.StudentID, CONCAT(s.Fname, ' ', s.Lname) AS FullName,
 app.get('/get-my-avg-grades', (req, res) => {
   const studentEmail = req.cookies.username;
 
+
+  
   const sql = `
-    SELECT 
-      c.CourseName,
-      ROUND(AVG(g.Grade), 2) AS CourseAvg
-    FROM student s
-    JOIN grade g ON s.StudentID = g.StudentID
-    JOIN course c ON g.CourseID = c.CourseID
-    WHERE LOWER(s.Email) = LOWER(?)
-    GROUP BY c.CourseName
-    ORDER BY c.CourseName
+    SELECT * 
+    FROM student_course_averages_view 
+    WHERE StudentID = (
+      SELECT StudentID FROM student WHERE LOWER(Email) = LOWER(?)
+    )
+    ORDER BY CourseName;
   `;
 
   con.query(sql, [studentEmail], (err, results) => {
@@ -546,17 +536,8 @@ app.post('/submit-payment', (req, res) => {
 /*---------------------------------- Admin Enrollment Status ----------------------------------*/
 
 app.get('/admin/enrollment-stats', (req, res) => {
-  const sql = `
-SELECT 
-  c.CourseID,
-  c.CourseName,
-  COUNT(e.StudentID) AS EnrolledCount,
-  c.AvailableSeats,
-  (COUNT(e.StudentID) + c.AvailableSeats) AS MaxCapacity
-FROM course c
-LEFT JOIN enrollment e ON c.CourseID = e.CourseID
-GROUP BY c.CourseID, c.CourseName, c.AvailableSeats
-  `;
+  const sql = `SELECT * FROM admin_enrollment_status_view`;
+
 
   con.query(sql, (err, results) => {
     if (err) {
@@ -611,17 +592,7 @@ con.query(studentQuery, [email], (err2, studentResult) => {
 /*---------------------------------- Outstanding Balances ----------------------------------*/
 
 app.get('/admin/outstanding-balances', (req, res) => {
-  const sql = `
-    SELECT 
-      s.StudentID,
-      CONCAT(s.Fname, ' ', s.Lname) AS FullName,
-      10000 AS TotalTuition,
-      IFNULL(SUM(CASE WHEN p.Status = 'Paid' THEN p.Amount ELSE 0 END), 0) AS TotalPaid,
-      10000 - IFNULL(SUM(CASE WHEN p.Status = 'Paid' THEN p.Amount ELSE 0 END), 0) AS OutstandingBalance
-    FROM student s
-    LEFT JOIN payment p ON s.StudentID = p.StudentID
-    GROUP BY s.StudentID
-  `;
+  const sql = `SELECT * FROM admin_outstanding_balances_view`;
 
   con.query(sql, (err, results) => {
     if (err) {
@@ -633,17 +604,7 @@ app.get('/admin/outstanding-balances', (req, res) => {
 });
 
 app.get('/admin/student-activities', (req, res) => {
-  const sql = `
-    SELECT 
-      s.StudentID,
-      CONCAT(s.Fname, ' ', s.Lname) AS StudentName,
-      e.Name AS ActivityName,
-      e.ActivityID
-    FROM student_extracurricular se
-    JOIN student s ON se.StudentID = s.StudentID
-    JOIN extracurricular e ON se.ActivityID = e.ActivityID
-    ORDER BY e.Name, s.Lname;
-  `;
+  const sql = `SELECT * FROM student_activity_view ORDER BY ActivityName, StudentName`;
 
   con.query(sql, (err, results) => {
     if (err) {
